@@ -186,27 +186,13 @@ void mostrarHistorico(Historico *l)
           noNumB=noLista->b.inicio;
           noNumC=noLista->c.inicio;
 
-          while(noNumA!=NULL)
-          {
-            printf("%d",noNumA->valor);
-            noNumA=noNumA->prox;
-          }
-
+          mostrar(noNumA);
           printf(" %c ",noLista->operacao);
-          while(noNumB!=NULL)
-          {
-            printf("%d",noNumB->valor);
-            noNumB=noNumB->prox;
-          }
-          
+          mostrar(noNumB);
           printf(" = ");
-          while(noNumC!=NULL)
-          {
-            printf("%d",noNumC->valor);
-            noNumC=noNumC->prox;
-          }
-
+          mostrar(noNumC);
           printf("\n");
+          
           noLista = noLista->prox;
        }
        printf("\n");
