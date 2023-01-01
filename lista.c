@@ -5,7 +5,7 @@
 typedef struct noNumero 
 {
     int valor;
-    struct noNumero prox;
+    struct noNumero *prox;
 }NoNumero;
 
 typedef struct listaNumero
@@ -21,7 +21,7 @@ typedef struct noOperacao
     Numero b;
     Numero c;
     char operacao;
-    struct noOperacao prox;
+    struct noOperacao *prox;
 
 }NoOperacao;
 
@@ -48,13 +48,18 @@ int listaVazia(Numero *l)
 int inserirFim(Numero *l, int it) 
 {
     if (l == NULL) return 2;
-    if (listaVazia(l) == 0) return inserirInicio(l,it);
+    if (listaVazia(l) == 0)
+    {
+        l->inicio->valor=it;
+        l->inicio->prox=NULL;
+        return 0;
+    }
     
     NoNumero *noLista = l->inicio;
     while (noLista->prox != NULL)
         noLista = noLista->prox;
     
-    NoNumero *no = (noNumero*)malloc(sizeof(noNumero));
+    NoNumero *no = (NoNumero*)malloc(sizeof(NoNumero));
     
     no->valor = it;
     no->prox = noLista->prox;
@@ -89,8 +94,8 @@ int removerFim(Numero *l)
     if (l == NULL) return 2;
     if (listaVazia(l) == 0) return 1;
     
-    noNumero *noAuxiliar = NULL;
-    noNumero *noLista = l->inicio;
+    NoNumero *noAuxiliar = NULL;
+    NoNumero *noLista = l->inicio;
     
     while (noLista->prox != NULL) 
     {
@@ -123,13 +128,21 @@ int historicoVazia(Historico *l)
 int inserirFimHistorico(Historico *l, Numero n1, Numero n2, Numero n3, char op)
 {
     if (l == NULL) return 2;
-    if (listaVazia(l) == 0) return inserirInicio(l,it);
+    if (listaVazia(l) == 0)
+    {
+        l->inicio->a=n1;
+        l->inicio->b=n2;
+        l->inicio->c=n3;
+        l->inicio->operacao=op;
+        l->inicio->prox=NULL;
+        return 0;
+    }
     
-    noNumero *noLista = l->inicio;
+    NoNumero *noLista = l->inicio;
     while (noLista->prox != NULL)
         noLista = noLista->prox;
     
-    NoOperacao *no = (noNumero*)malloc(sizeof(noNumero));
+    NoOperacao *no = (NoNumero*)malloc(sizeof(NoNumero));
     
     no->a = n1;
     no->b = n2;

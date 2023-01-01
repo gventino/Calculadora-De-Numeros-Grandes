@@ -2,7 +2,7 @@
 typedef struct listaNumero Numero;
 Numero *criar();
 int listaVazia(Numero *l);
-int inserirFim(Numero *l, int it) ;
+int inserirFim(Numero *l, int it);
 void limpar(Numero *l);
 void mostrar(Numero *l);
 int removerFim(Numero *l);
