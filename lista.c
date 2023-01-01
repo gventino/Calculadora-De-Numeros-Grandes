@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "lista.h"
 
 //construcao de um numero:
 typedef struct noNumero 
@@ -210,4 +211,49 @@ void mostrarHistorico(Historico *l)
        }
        printf("\n");
     }
+}
+
+//funcoes operacoes diversas
+//processo q eu pensei pras operacoes:a gnt recebe da main o historico criado la, os numeros(ja criado e formado) e a operacao que o usuario digita, e assim é gerado uma lista do tipo Numero que é o resultado da operacao.
+//no fim tudo seria inserido no historico
+//B)
+
+int soma(Historico *l, Numero n1, Numero n2, char op)
+{
+    if(l==NULL) return 2;
+    if (listaVazia(l) == 0) return 1;
+    Numero n3;//lista do numero resultante da operacao
+    //coisinhas da operacao
+    inserirFimHistorico(l,n1,n2,n3,op);
+    return 0;
+}
+
+int subtracao(Historico *l, Numero n1, Numero n2, char op)
+{
+    if(l==NULL) return 2;
+    if (listaVazia(l) == 0) return 1;
+    //coisinhas da operacao
+    Numero n3;//lista do numero resultante da operacao
+    inserirFimHistorico(l,n1,n2,n3,op);
+    return 0;
+}
+
+int multiplicacao(Historico *l, Numero n1, Numero n2, char op)
+{
+    if(l==NULL) return 2;
+    if (listaVazia(l) == 0) return 1;
+    //coisinhas da operacao
+    Numero n3;//lista do numero resultante da operacao
+    inserirFimHistorico(l,n1,n2,n3,op);
+    return 0;
+}
+
+int divisao(Historico *l, Numero n1, Numero n2, char op)
+{
+    if(l==NULL) return 2;
+    if (listaVazia(l) == 0) return 1;
+    //coisinhas da operacao
+    Numero n3;//lista do numero resultante da operacao
+    inserirFimHistorico(l,n1,n2,n3,op);
+    return 0;
 }
