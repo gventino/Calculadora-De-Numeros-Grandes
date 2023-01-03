@@ -11,6 +11,7 @@ typedef struct noNumero
 
 typedef struct listaNumero
 {
+    char sinal;
     NoNumero *inicio;
 }Numero;
 
@@ -44,6 +45,18 @@ int listaVazia(Numero *l)
     if (l == NULL) return 2;
     if (l->inicio == NULL) return 0;
     return 1;
+}
+
+int inserirInicio(Numero *l, int it)
+{
+    if(l == NULL) return 2;
+    if(listaVazia(l)==0) return inserirFim(l,it);
+    NoNumero *noLista = l->inicio;
+    NoNumero *novo = (NoNumero *)malloc(sizeof(NoNumero));
+    novo->valor=it;
+    novo->prox=noLista;
+    l->inicio=novo;
+    return 0;
 }
 
 int inserirFim(Numero *l, int it) 
@@ -107,6 +120,16 @@ int removerFim(Numero *l)
     if (noAuxiliar == NULL) l->inicio = NULL;
     else noAuxiliar->prox = NULL;
     
+    free(noLista);
+    return 0;
+}
+
+int removerInicio(Numero *l)
+{
+    if (l == NULL) return 2;
+    if (listaVazia(l) == 0) return 1;
+    NoNumero *noLista = l->inicio;
+    l->inicio=l->inicio->prox;
     free(noLista);
     return 0;
 }

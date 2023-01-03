@@ -5,10 +5,12 @@
 typedef struct listaNumero Numero;
 Numero *criar();
 int listaVazia(Numero *l);
+int inserirInicio(Numero *l, int it);//necessário para adição e multiplicação
 int inserirFim(Numero *l, int it);
 void limpar(Numero *l);
 void mostrar(Numero *l);
 int removerFim(Numero *l);
+int removerInicio(Numero *l);//necessário para subtração e divisão
 
 //Historico:
 typedef struct listaHistorico Historico;
