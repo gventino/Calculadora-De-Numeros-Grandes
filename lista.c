@@ -86,8 +86,8 @@ void mostrar(Numero *l)
 {
     if (l != NULL)
     {
-       printf("\n");
        NoNumero *noLista = l->inicio;
+       printf("%c",l->sinal);
        while (noLista != NULL)
        {
           printf("%d",noLista->valor);
@@ -241,13 +241,20 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     teste=getc(stdin);
     while(teste!='\n')
     {
-        ungetc(teste,stdin);
+        if(teste=='-')
+            a->sinal='-';
+
+        else
+            ungetc(teste,stdin);
+
         scanf("%6d",&userInputA);
         inserirFim(a,userInputA);
         userInputA=0;
         teste=getc(stdin);
     }
     fflush(stdin);
+    printf("\nA=");
+    mostrar(a);
 
     printf("\nInsira a operacao:");
     scanf("%c",&operacao);
@@ -257,13 +264,20 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     teste=getc(stdin);
     while(teste!='\n')
     {
-        ungetc(teste,stdin);
+        if(teste=='-')
+            b->sinal='-';
+
+        else
+            ungetc(teste,stdin);
+
         scanf("%6d",&userInputA);
         inserirFim(b,userInputA);
         userInputA=0;
         teste=getc(stdin);
     }
     fflush(stdin);
+    printf("\nB=");
+    mostrar(b);
 
 
     switch (operacao)
