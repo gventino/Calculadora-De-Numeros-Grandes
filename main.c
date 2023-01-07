@@ -13,7 +13,7 @@ int main()
     Numero *A=criar();
     Numero *B=criar();
     Numero *C=criar();
-    Historico *historico=criar();
+    Historico *historico=criarHistorico();
 
     printf("\nEscolha uma das opcoes a baixo:\n");
     printf("A- Comecar operacao nova\n");

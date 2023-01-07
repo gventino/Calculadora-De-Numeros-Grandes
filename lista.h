@@ -11,6 +11,8 @@ void limpar(Numero *l);
 void mostrar(Numero *l);
 int removerFim(Numero *l);
 int removerInicio(Numero *l);//necessário para subtração e divisão
+int corrige(Numero *l);//corrigir os erros de ordem q o scanf gerou nos numeros
+int tamanho(Numero *l);
 
 //Historico:
 typedef struct listaHistorico Historico;

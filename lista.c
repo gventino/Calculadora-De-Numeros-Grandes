@@ -144,7 +144,7 @@ int historicoVazia(Historico *l)
 int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op)
 {
     if (l == NULL) return 2;
-    if (listaVazia(l) == 0)
+    if (historicoVazia(l) == 0)
     {
         l->inicio->a=n1;
         l->inicio->b=n2;
@@ -154,11 +154,11 @@ int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char o
         return 0;
     }
 
-    NoNumero *noLista = l->inicio;
+    NoOperacao *noLista = l->inicio;
     while (noLista->prox != NULL)
         noLista = noLista->prox;
 
-    NoOperacao *no = (NoNumero*)malloc(sizeof(NoNumero));
+    NoOperacao *no = (NoOperacao*)malloc(sizeof(NoOperacao));
 
     no->a = n1;
     no->b = n2;
@@ -174,7 +174,7 @@ int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char o
 int removerFimHistorico(Historico *l)
 {
     if (l == NULL) return 2;
-    if (listaVazia(l) == 0) return 1;
+    if (historicoVazia(l) == 0) return 1;
 
     NoOperacao *noAuxiliar = NULL;
     NoOperacao *noLista = l->inicio;
@@ -194,7 +194,7 @@ int removerFimHistorico(Historico *l)
 
 void limparHistorico(Historico *l)
 {
-    while (listaVazia(l) != 0)
+    while (historicoVazia(l) != 0)
         removerFimHistorico(l);
 }
 
@@ -206,14 +206,14 @@ void mostrarHistorico(Historico *l)
     {
        printf("Historico:\n");
        NoOperacao *noLista = l->inicio;
-       NoNumero *noNumA=noLista->a->inicio;
-       NoNumero *noNumB=noLista->b->inicio;
-       NoNumero *noNumC=noLista->c->inicio;
+       Numero *noNumA=noLista->a;
+       Numero *noNumB=noLista->b;
+       Numero *noNumC=noLista->c;
        while (noLista != NULL)
        {
-          noNumA=noLista->a->inicio;
-          noNumB=noLista->b->inicio;
-          noNumC=noLista->c->inicio;
+          noNumA=noLista->a;
+          noNumB=noLista->b;
+          noNumC=noLista->c;
 
           mostrar(noNumA);
           printf(" %c ",noLista->operacao);
@@ -236,6 +236,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
 
     int userInputA;
     char teste;
+    char lixo;
     char operacao;
 
     printf("\nInsira o Primeiro Numero: ");
@@ -257,12 +258,14 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     if(a->sinal!='-')
         a->sinal='+';
     printf("\nA=");
+    corrige(a);
     mostrar(a);
 
     printf("\nInsira a operacao:");
     scanf("%c",&operacao);
     fflush(stdin);
 
+    lixo = getc(stdin);
     printf("\nInsira o Segundo Numero: ");
     teste=getc(stdin);
     while(teste!='\n')
@@ -282,6 +285,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     if(b->sinal!='-')
         b->sinal='+';
     printf("\nB=");
+    corrige(b);
     mostrar(b);
 
     switch (operacao)
@@ -313,6 +317,54 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
             break;
     }
 }
+
+int corrige(Numero *l)
+{
+    if(l==NULL) return 2;
+    if(listaVazia(l)==0) return 1;
+    int i,j;
+    NoNumero *nonum = l->inicio;
+    while(nonum->prox != NULL)
+        nonum = nonum->prox;
+    
+    //printf("\nno antes :%d",nonum->valor);
+    NoNumero *aux = nonum->ant;
+    while(aux != NULL)//aux é o anterior de nonum, se aux é NULL, é pq o nonum é o primeiro no da lista
+    {
+        for(i=10;i<=100000;i=i*10)//i é fator de correçao de algarismo, que tb verifica o limite do valor de nonum(se for menor que 10^6, precisa de correçao)
+        {
+            if(nonum->valor==(nonum->valor)%i)
+            {
+                j=(aux->valor)%10;//pega o ultimo algarismo do no anterior
+                aux->valor=(aux->valor)/10;//corrige questões de classe numerica
+                nonum->valor=(nonum->valor) + j*i;//insere o algarismo do no anterior no no atual, multiplicando ele pelo fator de correçao de classe do algarismo
+            }
+        }
+        nonum = nonum->ant;
+        aux = aux->ant;
+    }
+
+    while(nonum->prox != NULL)
+        nonum = nonum->prox;
+    
+    //printf("\nno depois: %d",nonum->valor);
+    //printf("\n\n\n");
+    return 0;
+}
+
+int tamanho(Numero *l)
+{
+    if(l==NULL) return -1;
+    if(listaVazia(l)==0) return 0;
+    int i=1;
+    NoNumero *nolista = l->inicio;
+    while(nolista->prox!=NULL)
+    {
+        i++;
+        nolista=nolista->prox;
+    }
+    return i;
+}
 //funcoes operacoes diversas
 //processo q eu pensei pras operacoes:a gnt recebe da main o historico criado la, os numeros(ja criado e formado) e a operacao que o usuario digita, e assim é gerado uma lista do tipo Numero que é o resultado da operacao.
 //no fim tudo seria inserido no historico
@@ -321,8 +373,17 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
 int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 {
     if(l==NULL) return 2;
-    if (listaVazia(l) == 0) return 1;
-    //coisinhas da operacao
+    if (historicoVazia(l) == 0) return 1;
+    if (listaVazia(n1) == 0) return 1;
+    if (listaVazia(n2) == 0) return 1;
+    if (listaVazia(n3) == 0) return 1;
+    if((n1->sinal=='-')&&(n2->sinal=='+')) return subtracao(l,n2,n1,n3);
+    if((n1->sinal=='+')&&(n2->sinal=='-')) return subtracao(l,n1,n2,n3);
+    if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='-';
+    else n3->sinal='+';
+
+    NoNumero *a = n1->inicio;
+    NoNumero *b = n2->inicio;
     inserirFimHistorico(l,n1,n2,n3,'+');
     return 0;
 }
