@@ -87,7 +87,8 @@ void mostrar(Numero *l)
     if (l != NULL)
     {
        NoNumero *noLista = l->inicio;
-       printf("%c",l->sinal);
+       if(l->sinal=='-')
+        printf("%c",l->sinal);
        while (noLista != NULL)
        {
           printf("%d",noLista->valor);
@@ -253,6 +254,8 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
         teste=getc(stdin);
     }
     fflush(stdin);
+    if(a->sinal!='-')
+        a->sinal='+';
     printf("\nA=");
     mostrar(a);
 
@@ -276,9 +279,10 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
         teste=getc(stdin);
     }
     fflush(stdin);
+    if(b->sinal!='-')
+        b->sinal='+';
     printf("\nB=");
     mostrar(b);
-
 
     switch (operacao)
     {
