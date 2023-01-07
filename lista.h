@@ -16,15 +16,18 @@ int removerInicio(Numero *l);//necessário para subtração e divisão
 typedef struct listaHistorico Historico;
 Historico *criarHistorico();
 int historicoVazia(Historico *l);
-int inserirFimHistorico(Historico *l, Numero n1, Numero n2, Numero n3, char op);
+int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op);
 int removerFimHistorico(Historico *l);
 void limparHistorico(Historico *l);
 void mostrarHistorico(Historico *l);
 
+//opcoes:
+int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
+
 //Operações diversas:
-int soma(Historico *l, Numero n1, Numero n2, char op);
-int subtracao(Historico *l, Numero n1, Numero n2, char op);
-int multiplicacao(Historico *l, Numero n1, Numero n2, char op);
-int divisao(Historico *l, Numero n1, Numero n2, char op);
+int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
 
 #endif

@@ -9,7 +9,12 @@ int main()
     char op;
     char l; //lixo
     char *n1, *n2;
+    
+    Numero *A=criar();
+    Numero *B=criar();
+    Numero *C=criar();
     Historico *historico=criar();
+
     printf("\nEscolha uma das opcoes a baixo:\n");
     printf("A- Comecar operacao nova\n");
     printf("B- Limpar historico\n");
@@ -29,32 +34,7 @@ int main()
 	    {
             case 'A':
                 //funcao de comecar nova operacao aqui
-                char string[50];
-                int v1[30];
-                int v2[30];
-                int i;
-                int j = 0;
-                printf("\nDigite o valor 1");
-                scanf("%s", string);
-                for (i=0; i<10; i+=3)
-                {
-                    v1[j] += (string[i+2] - '0');
-                    v1[j] += 10*(string[i+1] - '0');
-                    v1[j] += 100*(string[i] - '0');
-                    j++;
-                }
-
-                printf("\nDigite o valor 2");
-                scanf("%s", string);
-                for (i=0; i<10; i+=3)
-                {
-                    v2[j] += (string[i+2] - '0');
-                    v2[j] += 10*(string[i+1] - '0');
-                    v2[j] += 100*(string[i] - '0');
-                    j++;
-                }
-
-                operacaoA(*n1,*n2,l);
+                opcaoA(A, B, C, historico);
                 printf("\nOperacao Realizada!");
                 break;
 
