@@ -84,17 +84,33 @@ void limpar(Numero *l)
 
 void mostrar(Numero *l)
 {
+    int y=5;
     if (l != NULL)
     {
-       NoNumero *noLista = l->inicio;
-       if(l->sinal=='-')
+        NoNumero *noLista = l->inicio;
+        if(l->sinal=='-')
         printf("%c",l->sinal);
-       while (noLista != NULL)
-       {
-          printf("%d",noLista->valor);
-          noLista = noLista->prox;
-       }
-       printf("\n");
+        while (noLista != NULL)
+        {
+            if(noLista->ant!=NULL)
+            {
+                for(int i=10;i<=100000;i=i*10)
+                {
+                    if((noLista->valor)<i)
+                    {
+                        for(int i=0;i<y;i++)
+                        {
+                            printf("0");
+                        }
+                        break;
+                    }
+                    y--;
+                }
+            }
+            printf("%d",noLista->valor);
+            noLista = noLista->prox;
+        }
+        printf("\n");
     }
 }
 
@@ -234,6 +250,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     if(a==NULL || b==NULL || c==NULL || h==NULL)
         return -1;
 
+    int r;
     int userInputA;
     char teste;
     char lixo;
@@ -292,6 +309,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     {
 
         case '+':
+            r = soma(h,a,b,c);
             printf("\nsoma feita!");
             //return soma(h, a, b, c);
             break;
@@ -327,7 +345,7 @@ int corrige(Numero *l)
     while(nonum->prox != NULL)
         nonum = nonum->prox;
     
-    //printf("\nno antes :%d",nonum->valor);
+    //printf("\nno antes: %d",nonum->valor);
     NoNumero *aux = nonum->ant;
     while(aux != NULL)//aux é o anterior de nonum, se aux é NULL, é pq o nonum é o primeiro no da lista
     {
@@ -373,15 +391,13 @@ int tamanho(Numero *l)
 int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 {
     if(l==NULL) return 2;
-    if (historicoVazia(l) == 0) return 1;
     if (listaVazia(n1) == 0) return 1;
     if (listaVazia(n2) == 0) return 1;
-    if (listaVazia(n3) == 0) return 1;
     if((n1->sinal=='-')&&(n2->sinal=='+')) return subtracao(l,n2,n1,n3);
     if((n1->sinal=='+')&&(n2->sinal=='-')) return subtracao(l,n1,n2,n3);
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='-';
     else n3->sinal='+';
-
+    int y;
     NoNumero *a = n1->inicio;
     NoNumero *b = n2->inicio;
 
@@ -391,8 +407,51 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     while(b->prox != NULL)
         b = b->prox;
 
-    
-    inserirFimHistorico(l,n1,n2,n3,'+');
+    while((a!=NULL)&&(b!=NULL))
+    {
+        y = a->valor + b->valor;
+        inserirInicio(n3,y);
+        a = a->ant;
+        b = b->ant;
+    }
+
+    if(a==NULL)
+    {
+        while(b!=NULL)
+        {
+            inserirInicio(n3,b->valor);
+            b = b->ant;
+        }
+    }
+
+    if(b==NULL)
+    {
+        while(a!=NULL)
+        {
+            inserirInicio(n3,a->valor);
+            a = a->ant;
+        }
+    }
+
+    NoNumero *c = n3->inicio;
+    while(c->prox != NULL)
+        c = c->prox;
+
+    while(c!=NULL)
+    {
+        if(c->valor>1000000)
+        {
+            c->valor = (c->valor)%1000000;
+            if(c->ant!=NULL)
+                c->ant = c->ant + 1;
+            else
+                inserirInicio(n3,1);
+        }
+        c = c->ant;
+    }
+    printf("\nRESULTADO: ");
+    mostrar(n3);
+    //inserirFimHistorico(l,n1,n2,n3,'+');
     return 0;
 }
 
