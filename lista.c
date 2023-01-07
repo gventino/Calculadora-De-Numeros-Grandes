@@ -344,8 +344,8 @@ int corrige(Numero *l)
         aux = aux->ant;
     }
 
-    while(nonum->prox != NULL)
-        nonum = nonum->prox;
+    //while(nonum->prox != NULL)
+    //    nonum = nonum->prox;
     
     //printf("\nno depois: %d",nonum->valor);
     //printf("\n\n\n");
@@ -384,6 +384,14 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 
     NoNumero *a = n1->inicio;
     NoNumero *b = n2->inicio;
+
+    while(a->prox != NULL)
+        a = a->prox;
+    
+    while(b->prox != NULL)
+        b = b->prox;
+
+    
     inserirFimHistorico(l,n1,n2,n3,'+');
     return 0;
 }
