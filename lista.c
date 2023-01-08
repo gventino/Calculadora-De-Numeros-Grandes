@@ -78,6 +78,7 @@ int inserirFim(Numero *l, int it)
 
 void limpar(Numero *l)
 {
+    l->sinal = NULL;
     while (listaVazia(l) != 0)
         removerFim(l);
 }
@@ -304,7 +305,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     printf("\nB=");
     corrige(b);
     mostrar(b);
-    printf("\n\n\n%c %c %c",a->sinal,b->sinal,c->sinal);
+    //printf("\n\n\n%c %c",a->sinal,b->sinal);
 
     switch (operacao)
     {
@@ -394,7 +395,8 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 {
     if(l==NULL) return 2;
     if (listaVazia(n1) == 0) return 1;
-    if (listaVazia(n2) == 0) return 1;
+    if (listaVazia(n2) == 0) return 1; 
+    
     if((n1->sinal=='-')&&(n2->sinal=='+')) return subtracao(l,n1,n2,n3);
     if((n1->sinal=='+')&&(n2->sinal=='-')) return subtracao(l,n1,n2,n3);
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='-';
@@ -477,6 +479,7 @@ int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
         n2->sinal = '-';
         return 0;
     }
+    
     if((n1->sinal=='+')&&(n2->sinal=='+'))
     {
         int n = tamanho(n1);
@@ -520,6 +523,7 @@ int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 			}
         }
     }
+    
     if((n1->sinal=='-')&&(n2->sinal=='-'))
     {
         int n = tamanho(n1);
@@ -565,11 +569,17 @@ int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 
     NoNumero *no1 = n1->inicio;
     NoNumero *no2 = n2->inicio;
+
+    while(no1->prox != NULL)
+        no1 = no1->prox;
+
+    while(no2->prox != NULL)
+        no2 = no2->prox;
     NoNumero *aux1 = no1->ant;
     int i = 1,y;
     while(no1!=NULL && no2!=NULL)
     {
-        if(no2>no1)
+        if((no2->valor)>(no1->valor))
         {
             while(aux1!=NULL && aux1->valor == 0)
             {
@@ -580,6 +590,7 @@ int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
             {
                 aux1->valor = aux1->valor - 1;
                 (aux1->prox)->valor = (aux1->prox)->valor + 1000000;
+                aux1 = aux1->prox;
             }
         }
         y = no1->valor - no2->valor;
@@ -611,6 +622,8 @@ int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     while((n3->inicio)->valor == 0)
         removerInicio(n3);
     inserirFimHistorico(l,n1,n2,n3,'-');
+    printf("\nRESULTADO: ");
+    mostrar(n3);
     return 0;
 }
 
