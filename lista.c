@@ -160,19 +160,12 @@ int historicoVazia(Historico *l)
 int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op)
 {
     if (l == NULL) return 2;
-    if (historicoVazia(l) == 0)
-    {
-        l->inicio->a=n1;
-        l->inicio->b=n2;
-        l->inicio->c=n3;
-        l->inicio->operacao=op;
-        l->inicio->prox=NULL;
-        return 0;
-    }
-
     NoOperacao *noLista = l->inicio;
-    while (noLista->prox != NULL)
+    if(noLista!=NULL)
+    {
+        while (noLista->prox != NULL)
         noLista = noLista->prox;
+    }
 
     NoOperacao *no = (NoOperacao*)malloc(sizeof(NoOperacao));
 
@@ -181,9 +174,16 @@ int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char o
     no->c = n3;
     no->operacao = op;
 
-    no->prox = noLista->prox;
-    noLista->prox = no;
-
+    if(noLista==NULL)
+    {
+        no->prox = noLista;
+        noLista = no;
+    }
+    else
+    {
+        no->prox = noLista->prox;
+        noLista->prox = no;
+    }
     return 0;
 }
 
@@ -304,6 +304,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     printf("\nB=");
     corrige(b);
     mostrar(b);
+    printf("\n\n\n%c %c %c",a->sinal,b->sinal,c->sinal);
 
     switch (operacao)
     {
@@ -315,6 +316,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
             break;
 
         case '-':
+            r = subtracao(h,a,b,c);
             printf("\nsubtracao feita!");
             //return subtracao(h, a, b, c);
             break;
@@ -393,7 +395,7 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     if(l==NULL) return 2;
     if (listaVazia(n1) == 0) return 1;
     if (listaVazia(n2) == 0) return 1;
-    if((n1->sinal=='-')&&(n2->sinal=='+')) return subtracao(l,n2,n1,n3);
+    if((n1->sinal=='-')&&(n2->sinal=='+')) return subtracao(l,n1,n2,n3);
     if((n1->sinal=='+')&&(n2->sinal=='-')) return subtracao(l,n1,n2,n3);
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='-';
     else n3->sinal='+';
@@ -433,6 +435,7 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
         }
     }
 
+    //correção do resultado
     NoNumero *c = n3->inicio;
     while(c->prox != NULL)
         c = c->prox;
@@ -451,15 +454,162 @@ int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     }
     printf("\nRESULTADO: ");
     mostrar(n3);
-    //inserirFimHistorico(l,n1,n2,n3,'+');
+    inserirFimHistorico(l,n1,n2,n3,'+');
     return 0;
 }
 
 int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 {
     if(l==NULL) return 2;
-    if (listaVazia(l) == 0) return 1;
-    //coisinhas da operacao
+    if (listaVazia(n1) == 0) return 1;
+    if (listaVazia(n2) == 0) return 1;
+    if((n1->sinal=='-')&&(n2->sinal=='+'))
+    {
+        n2->sinal = '-';
+        soma(l,n1,n2,n3);
+        n2->sinal = '+';
+        return 0;
+    }
+    if((n1->sinal=='+')&&(n2->sinal=='-'))
+    {
+        n2->sinal = '+';
+        soma(l,n1,n2,n3);
+        n2->sinal = '-';
+        return 0;
+    }
+    if((n1->sinal=='+')&&(n2->sinal=='+'))
+    {
+        int n = tamanho(n1);
+        int m = tamanho(n2);
+        if(n>m)
+        {
+            if(n3->sinal != '-')
+                n3->sinal = '+';
+        }
+        else if(n<m)
+        {
+            n3->sinal = '-';
+            subtracao(l,n2,n1,n3);
+        }
+        else
+        {
+            NoNumero *no1 = n1->inicio;
+			NoNumero *no2 = n2->inicio;
+
+			while(no1 != NULL)
+			{
+				if(no1->valor > no2->valor)
+				{
+                    if(n3->sinal != '-')
+					    n3->sinal = '+';
+					break;
+				}
+				else if(no1->valor < no2->valor)
+				{
+					n3->sinal = '-';
+                    subtracao(l,n2,n1,n3);
+					break;
+				}
+                else
+                {
+                    n3->sinal = '+';
+                    inserirInicio(n3,0);
+                }
+				no1 = no1->prox;
+				no2 = no2->prox;
+			}
+        }
+    }
+    if((n1->sinal=='-')&&(n2->sinal=='-'))
+    {
+        int n = tamanho(n1);
+        int m = tamanho(n2);
+        if(n>m)
+        {
+            if(n3->sinal != '+') n3->sinal = '-';
+        }
+        else if(n<m)
+        {
+            n3->sinal = '+';
+            subtracao(l,n2,n1,n3);
+        }
+        else
+        {
+            NoNumero *no1 = n1->inicio;
+			NoNumero *no2 = n2->inicio;
+
+			while(no1 != NULL)
+			{
+				if(no1->valor > no2->valor)
+				{
+                    if(n3->sinal != '+')
+					    n3->sinal = '-';
+					break;
+				}
+				else if(no1->valor < no2->valor)
+				{
+					n3->sinal = '+';
+                    subtracao(l,n2,n1,n3);
+					break;
+				}
+                else
+                {
+                    n3->sinal = '+';
+                    inserirInicio(n3,0);
+                }
+				no1 = no1->prox;
+				no2 = no2->prox;
+			}
+        }
+    }
+
+    NoNumero *no1 = n1->inicio;
+    NoNumero *no2 = n2->inicio;
+    NoNumero *aux1 = no1->ant;
+    int i = 1,y;
+    while(no1!=NULL && no2!=NULL)
+    {
+        if(no2>no1)
+        {
+            while(aux1!=NULL && aux1->valor == 0)
+            {
+                i++;
+                aux1 = aux1->ant;
+            }
+            for(int y=0;y<i;y++)
+            {
+                aux1->valor = aux1->valor - 1;
+                (aux1->prox)->valor = (aux1->prox)->valor + 1000000;
+            }
+        }
+        y = no1->valor - no2->valor;
+        inserirInicio(n3,y);
+        no1 = no1->ant;
+        if(no1!=NULL)
+            aux1 = aux1->ant;
+        no2 = no2->ant;
+    }
+
+    if(no1==NULL)
+    {
+        while(no2!=NULL)
+        {
+            inserirInicio(n3,no2->valor);
+            no2=no2->ant;
+        }
+    }
+
+    if(no2==NULL)
+    {
+        while(no1!=NULL)
+        {
+            inserirInicio(n3,no1->valor);
+            no1 =  no1->ant;
+        }
+    }
+
+    while((n3->inicio)->valor == 0)
+        removerInicio(n3);
     inserirFimHistorico(l,n1,n2,n3,'-');
     return 0;
 }

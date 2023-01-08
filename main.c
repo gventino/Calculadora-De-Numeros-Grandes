@@ -35,11 +35,15 @@ int main()
             case 'A':
                 //funcao de comecar nova operacao aqui
                 opcaoA(A, B, C, historico);
+                limpar(A);
+                limpar(B);
+                limpar(C);
                 printf("\nOperacao Realizada!");
                 break;
 
             case 'B':
                 //funcao de limpar queue das operacoes aqui
+                limparHistorico(historico);
                 printf("\nClear Realizado!");
                 break;
 
