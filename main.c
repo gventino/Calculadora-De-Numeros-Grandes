@@ -10,6 +10,10 @@ int main()
     char l; //lixo
     char *n1, *n2;
     
+    hist=fopen("historico.txt","w");
+    erro=fopen("errorlog.txt","w");
+    fprintf(erro,"\nERROS: ");
+    fprintf(hist,"\nHISTORICO: ");
     Numero *A=criar();
     Numero *B=criar();
     Numero *C=criar();
@@ -49,11 +53,14 @@ int main()
 
             case 'C':
                 //funcao de mostrar historico
+                mostrarHistorico(historico);
                 printf("\nHistorico Exibido");
                 break;
 
+            case 'X':
+                return 0;
             default:
-                fprintf(stderr, "INPUT INVALIDO\n");
+                fprintf(stderr,"\nINPUT INVALIDO!");
 		}
 
         printf("\nEscolha uma das opcoes a baixo:\n");
@@ -67,8 +74,8 @@ int main()
 		op = toupper(op);
 		fflush(stdin);
 	}
-	return 0; 
-    
-    printf("\nPressione qualquer tecla para encerrar o programa\n");
-    scanf("%c", &l); 
+	
+    fclose(erro);
+    fclose(hist);
+    return 0; 
 }

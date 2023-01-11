@@ -1,6 +1,8 @@
 #ifndef LISTA_H_INCLUDED
 #define LISTA_H_INCLUDED
 
+static FILE *erro;
+static FILE *hist;
 //Numeros:
 typedef struct listaNumero Numero;
 Numero *criar();
@@ -13,11 +15,12 @@ int removerFim(Numero *l);
 int removerInicio(Numero *l);//necessário para subtração e divisão
 int corrige(Numero *l);//corrigir os erros de ordem q o scanf gerou nos numeros
 int tamanho(Numero *l);
+int copia(Numero *l, Numero *r);
 
 //Historico:
 typedef struct listaHistorico Historico;
 Historico *criarHistorico();
-int historicoVazia(Historico *l);
+int historicoVazio(Historico *l);
 int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op);
 int removerFimHistorico(Historico *l);
 void limparHistorico(Historico *l);
@@ -28,8 +31,10 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
 
 //Operações diversas:
 int soma(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+Numero *somaAlt(Historico *l, Numero *n1, Numero *n2);
 int subtracao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
 int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
 int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+int multiplicacaoAlt(Historico *l, Numero *n1, Numero *n2, Numero *n3);
 
 #endif
