@@ -105,7 +105,7 @@ void limpar(Numero *l)
 {
     l->sinal = ' ';
     while (listaVazia(l) != 0)
-        removerFim(l);
+        removerInicio(l);
 }
 
 void mostrar(Numero *l)
@@ -133,6 +133,7 @@ void mostrar(Numero *l)
                     y--;
                 }
             }
+            y=5;
             printf("%d",noLista->valor);
             noLista = noLista->prox;
         }
@@ -375,6 +376,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     {
 
         case '+':
+        {
             r = soma(h,a,b,c);
             if(r==0)
             {
@@ -383,7 +385,9 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
                 mostrar(c);
             }
             break;
+        }
         case '-':
+        {
             r = subtracao(h,a,b,c);
             if(r==0)
             {
@@ -392,8 +396,9 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
                 mostrar(c);
             }
             break;
-
+        }
         case '*':
+        {
             r = multiplicacao(h,a,b,c);
             if(r==0)
             {
@@ -404,8 +409,9 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
             if(r==1)
                 printf("ero");
             break;
-
+        }
         case '/':
+        {
             r = divisao(h,a,b,c);
             if(r==0)
             {
@@ -414,7 +420,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
                 mostrar(c);
             }
             break;
-
+        }
         default:
             printf("\noperacao invalida!ERRO!");
             return -1;
