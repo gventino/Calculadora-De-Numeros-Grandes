@@ -28,6 +28,7 @@ void mostrarHistorico(Historico *l);
 int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
 
 //Operações diversas:
+int diferenca(Numero *a,Numero *b);
 Numero *soma(Historico *l, Numero *n1, Numero *n2);
 //Numero *somaAlt(Historico *l, Numero *n1, Numero *n2, int retorno);
 Numero *subtracao(Historico *l, Numero *n1, Numero *n2);

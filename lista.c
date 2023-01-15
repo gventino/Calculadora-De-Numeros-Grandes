@@ -414,14 +414,15 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
 
 int corrige(Numero *l)
 {
-    if(l==NULL)
+    if (l == NULL)
     {
-        fprintf(erro,"\nNumero Nulo em corrige");
+        fprintf(erro, "\nNumero Nulo em corrige");
         return 2;
     }
-    if(listaVazia(l)==0) return 1;
-    int i,j;
-    while(l->inicio->valor==0)
+    if (listaVazia(l) == 0)
+        return 1;
+    int i, j;
+    while (l->inicio->valor == 0)
     {
         removerInicio(l);
     }
@@ -908,4 +909,41 @@ int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     // coisinhas da operacao
     inserirFimHistorico(l, n1, n2, n3, '/');
     return 0;
+}
+
+int diferenca(Numero *a, Numero *b)
+{
+    if (listaVazia(a) == 0)
+        return 1;
+    if (listaVazia(b) == 0)
+        return 1;
+    NoNumero *no1 = a->inicio;
+    NoNumero *no2 = b->inicio;
+    int j = 0;
+    int n = tamanho(a),m = tamanho(b);
+    if(n>m)
+        return -1;
+    if(m>n)
+        return -2;
+    while (no1 != NULL)
+    {
+        if (no1->valor > no2->valor)
+        {
+            return -1;
+        }
+        else if (no1->valor < no2->valor)
+        {
+            return -2;
+        }
+        else
+        {
+            j++;
+        }
+        if((j==tamanho(a))&&(j==tamanho(b)))
+            return 0;
+        no1 = no1->prox;
+        no2 = no2->prox;
+    }
+    return -3;
+    //0 = iguais; -1 = a maior; -2 = b maior; -3 = erro.
 }
