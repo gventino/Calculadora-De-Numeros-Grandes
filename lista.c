@@ -449,7 +449,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
 
 int tamanho(Numero *l)
 {
-    
+
     if(l==NULL)
     {
         fprintf(erro,"\nNumero Nulo em tamanho");
@@ -463,7 +463,7 @@ int tamanho(Numero *l)
         i++;
         nolista=nolista->prox;
     }
-    
+
     return i;
 }
 
@@ -505,7 +505,7 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
     if (listaVazia(n1) == 0) return NULL;
     if (listaVazia(n2) == 0) return NULL;
     Numero *n3 = criar();
-    
+
     if(tamanho(n1)==1)
     {
         if(n1->inicio->valor==0)
@@ -517,7 +517,7 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
             return n3;
         }
     }
-    
+
     if(tamanho(n2)==1)
     {
         if(n2->inicio->valor==0)
@@ -535,9 +535,10 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='-';
     else n3->sinal='+';
     int y;
+
     NoNumero *a = n1->inicio;
     NoNumero *b = n2->inicio;
-    
+
     while(a->prox != NULL)
         a = a->prox;
     
@@ -640,7 +641,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         n2->sinal = '-';
         return n3;
     }
-    
+
     if((n1->sinal=='+')&&(n2->sinal=='+'))
     {
         int n = tamanho(n1);
@@ -689,7 +690,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
             }
         }
     }
-    
+
     if((n1->sinal=='-')&&(n2->sinal=='-'))
     {
         int n = tamanho(n1);
@@ -740,6 +741,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 
     while(no2->prox != NULL)
         no2 = no2->prox;
+
     NoNumero *aux1 = no1->ant;
     int i = 1,y;
     while(no1!=NULL && no2!=NULL)
@@ -832,7 +834,7 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
             a = a->prox;
     a1 = a;
     //printf("\n\n%d\n\n",a1->valor);
-    
+
     while(b!=NULL)
     {
         a = a1;
@@ -889,13 +891,11 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
     if((n1->sinal=='+')&&(n2->sinal=='-')) n3->sinal='-';
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='+';
     //inserirFimHistorico(l,n1,n2,n3,'*');
-    
     return n3;
 }
 
 int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
 {
-    
     if(l==NULL)
     {
         fprintf(erro,"\nHistorico Nulo em divisao");
@@ -909,6 +909,5 @@ int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     if (historicoVazio(l) == 0) return 1;
     //coisinhas da operacao
     inserirFimHistorico(l,n1,n2,n3,'/');
-    
     return 0;
 }
