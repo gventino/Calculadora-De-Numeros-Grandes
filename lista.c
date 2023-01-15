@@ -382,15 +382,10 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
         }
         case '*':
         {
-            r = multiplicacao(h,a,b,c);
-            if(r==0)
-            {
-                printf("\nmultiplicacao feita!");
-                printf("\no resultado da multiplicacao eh:");
-                mostrar(c);
-            }
-            if(r==1)
-                printf("ero");
+            c = multiplicacao(h,a,b);
+            printf("\nmultiplicacao feita!");
+            printf("\no resultado da multiplicacao eh:");
+            mostrar(c);
             break;
         }
         case '/':
@@ -617,7 +612,6 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
 
 Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 {
-    
     if(l==NULL)
     {
         fprintf(erro,"\nHistorico Nulo em subtracao");
@@ -631,7 +625,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
     if (listaVazia(n1) == 0) return NULL;
     if (listaVazia(n2) == 0) return NULL;
     Numero *n3 = criar();
-
+    int j=0;    
     if((n1->sinal=='-')&&(n2->sinal=='+'))
     {
         n2->sinal = '-';
@@ -658,8 +652,9 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         }
         else if(n<m)
         {
+            n3 = subtracao(l,n2,n1);
             n3->sinal = '-';
-            return subtracao(l,n2,n1);
+            return n3;
         }
         else
         {
@@ -670,23 +665,28 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 			{
 				if(no1->valor > no2->valor)
 				{
-                    if(n3->sinal != '-')
-					    n3->sinal = '+';
+				    n3->sinal = '+';
 					break;
 				}
 				else if(no1->valor < no2->valor)
 				{
-					n3->sinal = '-';
-                    return subtracao(l,n2,n1);
+                    n3 = subtracao(l,n2,n1);
+                    n3->sinal = '-';
+                    return n3;
 				}
                 else
                 {
                     n3->sinal = '+';
-                    inserirInicio(n3,0);
+                    j++;
                 }
 				no1 = no1->prox;
 				no2 = no2->prox;
 			}
+            if((j==m)&&(j==n))
+            {
+                inserirInicio(n3,0);
+                return n3;
+            }
         }
     }
     
@@ -700,8 +700,8 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         }
         else if(n<m)
         {
+            n3 = subtracao(l,n2,n1);
             n3->sinal = '+';
-            return subtracao(l,n2,n1);
         }
         else
         {
@@ -718,8 +718,8 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 				}
 				else if(no1->valor < no2->valor)
 				{
-					n3->sinal = '+';
-                    return subtracao(l,n2,n1);
+					n3 = subtracao(l,n2,n1);
+                    n3->sinal = '+';
 				}
                 else
                 {
@@ -746,7 +746,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
     {
         if((no2->valor)>(no1->valor))
         {
-            while(aux1!=NULL && aux1->valor == 0)
+            while((aux1!=NULL) && (aux1->valor == 0))
             {
                 i++;
                 aux1 = aux1->ant;
@@ -796,30 +796,30 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
     return n3;
 }
 
-int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
+Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
 {
-    
+    Numero *n3 = criar();
     if(l==NULL)
     {
         fprintf(erro,"\nHistorico Nulo em multiplicacao");
-        return 4;
+        return NULL;
     }
     if(n1==NULL || n2==NULL)
     {
         fprintf(erro,"\nNumero Nulo em multiplicacao");
-        return 2;
+        return NULL;
     }
-    if (listaVazia(n1) == 0) return 1;
-    if (listaVazia(n2) == 0) return 1;
+    if (listaVazia(n1) == 0) return NULL;
+    if (listaVazia(n2) == 0) return NULL;
     int y,z,i=0,j=0;
     NoNumero *a = n1->inicio;
     NoNumero *b = n2->inicio;
+    NoNumero *c = (NoNumero *)malloc(sizeof(NoNumero));
     NoNumero *a1 = (NoNumero *)malloc(sizeof(NoNumero));
     Numero *res1 = criar();
     Numero *res0 = criar();
     Numero *help1 = criar();
     Numero *help = criar();
-    Numero *help2 = criar();
     Numero *aux = criar();
 
     inserirInicio(res0,0);
@@ -842,18 +842,25 @@ int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
             //gerar uma linha da multiplicação
             y=(b->valor)*(a->valor);
             inserirInicio(aux,y);
-            //mostrar(aux);
-            if(j>0)
+            if((j>0)&&(aux->inicio->valor!=0))
             {
                 for(int y = 0;y<j;y++)
                 {
                     inserirFim(aux,0);
                 }
             }
+            c = aux->inicio;//nao precisa de loop pq so o inicio de aux tem valor relevante
+
+            if(c->valor>=10)
+            {
+                z = (c->valor)/10;
+                printf("z = %d",z);
+                c->valor = (c->valor)%10;
+                inserirInicio(aux,z);
+            }
             //printf("help = %d",help->inicio->valor);
             res1 = soma(l,aux,help);
             //removerFimHistorico;
-            //mostrar(res1);
             copia(res1,help);
             limpar(res1);
             limpar(aux);
@@ -862,7 +869,7 @@ int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
         }
         //gerar a soma das linhas da multiplicação
         j=0;
-        if(i>0)
+        if((i>0)&&(help->inicio->valor!=0))
         {
             for(int y=0;y<i;y++)
                 inserirFim(help,0);
@@ -883,7 +890,7 @@ int multiplicacao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
     if((n1->sinal=='-')&&(n2->sinal=='-')) n3->sinal='+';
     //inserirFimHistorico(l,n1,n2,n3,'*');
     
-    return 0;
+    return n3;
 }
 
 int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
