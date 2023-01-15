@@ -336,7 +336,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     if (a->sinal != '-')
         a->sinal = '+';
     printf("\nA=");
-    // corrige(a);
+    corrige(a);
     mostrar(a);
 
     printf("\nInsira a operacao:");
@@ -363,7 +363,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     if (b->sinal != '-')
         b->sinal = '+';
     printf("\nB=");
-    // corrige(b);
+    corrige(b);
     mostrar(b);
     // printf("\n\n\n%c %c",a->sinal,b->sinal);
 
@@ -412,9 +412,8 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     }
 }
 
-/*int corrige(Numero *l)
+int corrige(Numero *l)
 {
-
     if(l==NULL)
     {
         fprintf(erro,"\nNumero Nulo em corrige");
@@ -422,35 +421,12 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     }
     if(listaVazia(l)==0) return 1;
     int i,j;
-    NoNumero *nonum = l->inicio;
-    while(nonum->prox != NULL)
-        nonum = nonum->prox;
-
-    //printf("\nno antes: %d",nonum->valor);
-    NoNumero *aux = nonum->ant;
-    while(aux != NULL)//aux é o anterior de nonum, se aux é NULL, é pq o nonum é o primeiro no da lista
+    while(l->inicio->valor==0)
     {
-        for(i=10;i<=100;i=i*10)//i é fator de correçao de algarismo, que tb verifica o limite do valor de nonum(se for menor que 10^6, precisa de correçao)
-        {
-            if(nonum->valor==(nonum->valor)%i)
-            {
-                j=(aux->valor)%10;//pega o ultimo algarismo do no anterior
-                aux->valor=(aux->valor)/10;//corrige questões de classe numerica
-                nonum->valor=(nonum->valor) + j*i;//insere o algarismo do no anterior no no atual, multiplicando ele pelo fator de correçao de classe do algarismo
-            }
-        }
-        nonum = nonum->ant;
-        aux = aux->ant;
+        removerInicio(l);
     }
-
-    //while(nonum->prox != NULL)
-    //    nonum = nonum->prox;
-
-    //printf("\nno depois: %d",nonum->valor);
-    //printf("\n\n\n");
-
     return 0;
-}*/
+}
 
 int tamanho(Numero *l)
 {
@@ -874,7 +850,6 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
             if (c->valor >= 10)
             {
                 z = (c->valor) / 10;
-                printf("z = %d", z);
                 c->valor = (c->valor) % 10;
                 inserirInicio(aux, z);
             }
