@@ -9,11 +9,7 @@ int main()
     char op;
     char l; //lixo
     char *n1, *n2;
-    
-    hist=fopen("historico.txt","w");
-    erro=fopen("errorlog.txt","w");
-    fprintf(erro,"\nERROS: ");
-    fprintf(hist,"\nHISTORICO: ");
+    criarLogs();
     Numero *A=criar();
     Numero *B=criar();
     Numero *C=criar();
@@ -75,7 +71,5 @@ int main()
 		fflush(stdin);
 	}
 	
-    fclose(erro);
-    fclose(hist);
     return 0; 
 }
