@@ -121,30 +121,6 @@ void mostrar(Numero *l)
             printf("%c", l->sinal);
         while (noLista != NULL)
         {
-            /*if(noLista->ant!=NULL)
-            {
-                for(i=10;i<=100;i=i*10)
-                {
-                    y--;
-                    if((noLista->valor)==0)
-                    {
-                        for(j=0;j<5;j++)
-                        {
-                            printf("0");
-                        }
-                        i=1000;
-                    }
-                    else if((noLista->valor)<i)
-                    {
-                        for(j=0;j<y;j++)
-                        {
-                            printf("0");
-                        }
-                        i=1000;
-                    }
-                }
-            }
-            y=6;*/
             printf("%d", noLista->valor);
             noLista = noLista->prox;
         }
@@ -639,8 +615,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         int m = tamanho(n2);
         if (n > m)
         {
-            if (n3->sinal != '-')
-                n3->sinal = '+';
+            n3->sinal = '+';
         }
         else if (n < m)
         {
@@ -688,13 +663,13 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         int m = tamanho(n2);
         if (n > m)
         {
-            if (n3->sinal != '+')
-                n3->sinal = '-';
+            n3->sinal ='-';
         }
         else if (n < m)
         {
             n3 = subtracao(l, n2, n1);
             n3->sinal = '+';
+            return n3;
         }
         else
         {
@@ -705,22 +680,27 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
             {
                 if (no1->valor > no2->valor)
                 {
-                    if (n3->sinal != '+')
-                        n3->sinal = '-';
+                    n3->sinal = '-';
                     break;
                 }
                 else if (no1->valor < no2->valor)
                 {
                     n3 = subtracao(l, n2, n1);
                     n3->sinal = '+';
+                    return n3;
                 }
                 else
                 {
                     n3->sinal = '+';
-                    inserirInicio(n3, 0);
+                    j++;
                 }
                 no1 = no1->prox;
                 no2 = no2->prox;
+            }
+            if ((j == m) && (j == n))
+            {
+                inserirInicio(n3, 0);
+                return n3;
             }
         }
     }
@@ -735,6 +715,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         no2 = no2->prox;
 
     NoNumero *aux1 = no1->ant;
+    NoNumero *cteant = no1->ant;
     int i = 1, y;
     while (no1 != NULL && no2 != NULL)
     {
@@ -752,11 +733,15 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
                 aux1 = aux1->prox;
             }
         }
+        aux1 = cteant;
         y = no1->valor - no2->valor;
         inserirInicio(n3, y);
         no1 = no1->ant;
         if (no1 != NULL)
+        {
             aux1 = aux1->ant;
+            cteant = aux1;
+        }
         no2 = no2->ant;
     }
 
