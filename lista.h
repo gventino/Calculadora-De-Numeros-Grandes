@@ -16,6 +16,8 @@ int tamanho(Numero *l);
 int copia(Numero *l, Numero *r);
 
 //Historico:
+int mostrarNumeroArquivo(Numero *a);
+int mostrarOperacao(Numero *a, Numero *b, Numero *c);
 typedef struct listaHistorico Historico;
 Historico *criarHistorico();
 int historicoVazio(Historico *l);
