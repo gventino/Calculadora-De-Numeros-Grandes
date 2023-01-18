@@ -393,14 +393,16 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     }
     case '/':
     {
-        r = divisao(h, a, b, c);
-        if (r == 0)
-        {
-            printf("\ndivisao feita!");
-            printf("\no resultado da divisao eh:");
-            mostrar(c);
-            mostrarOperacao(a,b,c);
-        }
+        Numero *res = criar();
+        c = divisao(h, a, b, res);
+        printf("\ndivisao feita!");
+        printf("\no resultado da divisao eh:");
+        mostrar(c);
+        printf("\no resto da divisao eh:");
+        mostrar(res);
+        mostrarOperacao(a,b,c);
+        mostrarNumeroArquivo(res);
+        limpar(res);
         break;
     }
     default:
@@ -421,9 +423,12 @@ int corrige(Numero *l)
     if (listaVazia(l) == 0)
         return 1;
     int i, j;
-    while (l->inicio->valor == 0)
-    {
-        removerInicio(l);
+    if(tamanho(l)>1)
+    {   
+        while (l->inicio->valor == 0)
+        {
+            removerInicio(l);
+        }
     }
     fclose(erro);
     return 0;
@@ -524,9 +529,22 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
     }
 
     if ((n1->sinal == '-') && (n2->sinal == '+'))
-        return subtracao(l, n1, n2);
+    {
+        n1->sinal = '+';
+        n3 = subtracao(l, n1, n2);
+        n3->sinal = '-';
+        n1->sinal = '-';
+        return n3;
+    }
+
     if ((n1->sinal == '+') && (n2->sinal == '-'))
-        return subtracao(l, n1, n2);
+    {
+        n2->sinal = '+';
+        n3 = subtracao(l, n1, n2);
+        n2->sinal = '-';
+        return n3;
+    }
+
     if ((n1->sinal == '-') && (n2->sinal == '-'))
         n3->sinal = '-';
     else
@@ -718,6 +736,35 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
             }
         }
     }
+    char sin;
+    if (tamanho(n1) == 1)
+    {
+        if (n1->inicio->valor == 0)
+        {
+            sin = n3->sinal;
+            copia(n2, n3);
+            n3->sinal = sin;
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+    }
+
+    if (tamanho(n2) == 1)
+    {
+        if (n2->inicio->valor == 0)
+        {
+            copia(n1, n3);
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+    }
+
+    Numero *naux1 = criar();
+    copia(n1,naux1);
 
     NoNumero *no1 = n1->inicio;
     NoNumero *no2 = n2->inicio;
@@ -730,6 +777,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 
     NoNumero *aux1 = no1->ant;
     NoNumero *cteant = no1->ant;
+
     int i = 1, y;
     while (no1 != NULL && no2 != NULL)
     {
@@ -784,10 +832,9 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
         removerInicio(n3);
     }
 
-    // inserirFimHistorico(l,n1,n2,n3,'-');
-    /*printf("\nRESULTADO: ");
-    mostrar(n3);*/
+    //inserirFimHistorico(l,n1,n2,n3,'-');
     fclose(erro);
+    copia(naux1,n1);
     return n3;
 }
 
@@ -822,6 +869,62 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
 
     inserirInicio(res0, 0);
     inserirInicio(help, 0);
+
+    if (tamanho(n1) == 1)
+    {
+        if (n1->inicio->valor == 0)
+        {
+            inserirFim(n3,0);
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+        else if (n1->inicio->valor == 1)
+        {
+            copia(n2,n3);
+            if ((n1->sinal == '+') && (n2->sinal == '+'))
+                n3->sinal = '+';
+            if ((n1->sinal == '-') && (n2->sinal == '+'))
+                n3->sinal = '-';
+            if ((n1->sinal == '+') && (n2->sinal == '-'))
+                n3->sinal = '-';
+            if ((n1->sinal == '-') && (n2->sinal == '-'))
+                n3->sinal = '+';
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+    }
+
+    if (tamanho(n2) == 1)
+    {
+        if (n2->inicio->valor == 0)
+        {
+            inserirFim(n3,0);
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+        else if (n2->inicio->valor == 1)
+        {
+            copia(n1,n3);
+            if ((n1->sinal == '+') && (n2->sinal == '+'))
+                n3->sinal = '+';
+            if ((n1->sinal == '-') && (n2->sinal == '+'))
+                n3->sinal = '-';
+            if ((n1->sinal == '+') && (n2->sinal == '-'))
+                n3->sinal = '-';
+            if ((n1->sinal == '-') && (n2->sinal == '-'))
+                n3->sinal = '+';
+            // inserirFimHistorico(l,n1,n2,n3,'+');
+            fclose(hist);
+            fclose(erro);
+            return n3;
+        }
+    }
 
     while (b->prox != NULL)
         b = b->prox;
@@ -894,24 +997,76 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
     return n3;
 }
 
-int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3)
+Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto)
 {
     erro = fopen("log.txt", "a+");
     if (l == NULL)
     {
         fprintf(erro, "\nHistorico Nulo em divisao");
-        return 4;
+        return NULL;
     }
     if (n1 == NULL || n2 == NULL)
     {
         fprintf(erro, "\nNumero Nulo em divisao");
-        return 2;
+        return NULL;
     }
-    if (historicoVazio(l) == 0)
-        return 1;
+    int i,j=0;
+    fprintf(erro,"\npassando pela divisao");
+    Numero *n3 = criar();
+    Numero *auxn3 = criar();
+    Numero *auxn2 = criar();
+    Numero *n2copia = criar();
+    copia(n2,n2copia);
+    Numero *res = criar();
+    Numero *res1 = criar();
+    inserirFim(res1,1);
+    Numero *res2 = criar();
+    i = diferenca(n1,n2);
+    if(i==-1)
+    {
+        inserirFim(n3,0);
+        while(i!=-2)
+        {
+            if(res->inicio!=NULL)
+                limpar(res);
+            auxn3 = soma(l,n3,res1);
+            limpar(n3);
+            copia(auxn3,n3);
+            limpar(auxn3);
+            auxn2 = multiplicacao(l,n2,n3);
+            //removerFimHistorico(l);
+            limpar(n2);
+            copia(auxn2,n2);
+            limpar(auxn2);
+            res = subtracao(l,n1,n2);
+            //removerFimHistorico(l);
+            if(resto->inicio!=NULL)
+                limpar(resto);
+            copia(res,resto);
+            i = diferenca(res,n2copia);
+            printf("i = %d\n",i);
+        }
+        return n3;
+    }
+    if(i==-2)
+    {
+        inserirFim(n3,0);
+        copia(n1,resto);
+        return n3;
+    }
+    if(i==0)
+    {
+        inserirFim(n3,1);
+        inserirFim(resto,0);
+        return n3;
+    }
+    if(i==-3)
+    {
+        fprintf(erro, "\nErro na diferenca");
+        return NULL;
+    }
     // coisinhas da operacao
     fclose(erro);
-    return 0;
 }
 
 int diferenca(Numero *a, Numero *b)
@@ -947,7 +1102,6 @@ int diferenca(Numero *a, Numero *b)
         no1 = no1->prox;
         no2 = no2->prox;
     }
-
     return -3;
     //0 = iguais; -1 = a maior; -2 = b maior; -3 = erro.
 }
@@ -998,5 +1152,3 @@ int mostrarOperacao(Numero *a, Numero *b, Numero *c)
     fclose(hist);
     return 0;
 }
-
-

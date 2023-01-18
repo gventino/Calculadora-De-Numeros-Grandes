@@ -37,7 +37,7 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2);
 //Numero *subtracaoAlt(Historico *l, Numero *n1, Numero *n2);
 Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2);
 //Numero *multiplicacaoAlt(Historico *l, Numero *n1, Numero *n2);
-int divisao(Historico *l, Numero *n1, Numero *n2, Numero *n3);
+Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto);
 //Numero *divisaoAlt(Historico *l, Numero *n1, Numero *n2);
 void criarLogs();
 #endif
