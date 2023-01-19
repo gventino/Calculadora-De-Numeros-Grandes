@@ -1024,29 +1024,7 @@ Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto)
     i = diferenca(n1,n2);
     if(i==-1)
     {
-        inserirFim(n3,0);
-        while(i!=-2)
-        {
-            if(res->inicio!=NULL)
-                limpar(res);
-            auxn3 = soma(l,n3,res1);
-            limpar(n3);
-            copia(auxn3,n3);
-            limpar(auxn3);
-            auxn2 = multiplicacao(l,n2,n3);
-            //removerFimHistorico(l);
-            limpar(n2);
-            copia(auxn2,n2);
-            limpar(auxn2);
-            res = subtracao(l,n1,n2);
-            //removerFimHistorico(l);
-            if(resto->inicio!=NULL)
-                limpar(resto);
-            copia(res,resto);
-            i = diferenca(res,n2copia);
-            printf("i = %d\n",i);
-        }
-        return n3;
+        
     }
     if(i==-2)
     {
