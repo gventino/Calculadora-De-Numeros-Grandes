@@ -46,36 +46,31 @@ void criarLogs()
 // funcoes Numero:
 Numero *criar()
 {
-    erro = fopen("log.txt", "a");
     Numero *l = (Numero *)malloc(sizeof(Numero));
     if (l == NULL)
-        fprintf(erro, "\nERRO AO CRIAR NUMERO");
-    fprintf(erro, "\nNumero Criado");
+        return NULL;
     l->inicio = NULL;
-    fclose(erro);
     return l;
 }
 
 int listaVazia(Numero *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em listaVazia");
+        logErro(-2);
         return 2;
     }
     if (l->inicio == NULL)
         return 0;
     return 1;
-    fclose(erro);
+
 }
 
 int inserirInicio(Numero *l, int it)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em inserirInicio");
+        logErro(-2);
         return 2;
     }
     NoNumero *no = (NoNumero *)malloc(sizeof(NoNumero));
@@ -85,16 +80,15 @@ int inserirInicio(Numero *l, int it)
     if (l->inicio != NULL)
         l->inicio->ant = no;
     l->inicio = no;
-    fclose(erro);
+
     return 0;
 }
 
 int inserirFim(Numero *l, int it)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em inserirFim");
+        logErro(-2);
         return 2;
     }
     if (listaVazia(l) == 0)
@@ -107,7 +101,7 @@ int inserirFim(Numero *l, int it)
     no->prox = NULL;
     no->ant = noLista;
     noLista->prox = no;
-    fclose(erro);
+
     return 0;
 }
 
@@ -137,10 +131,9 @@ void mostrar(Numero *l)
 
 int removerFim(Numero *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em removerFim");
+        logErro(-2);
         return 2;
     }
     if (listaVazia(l) == 0)
@@ -153,16 +146,15 @@ int removerFim(Numero *l)
     else
         noLista->ant->prox = NULL;
     free(noLista);
-    fclose(erro);
+
     return 0;
 }
 
 int removerInicio(Numero *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em removerInicio");
+        logErro(-2);
         return 2;
     }
     if (listaVazia(l) == 0)
@@ -171,7 +163,7 @@ int removerInicio(Numero *l)
     l->inicio = noLista->prox;
     if (l->inicio != NULL)
         l->inicio->ant = NULL;
-    fclose(erro);
+
     free(noLista);
     return 0;
 }
@@ -186,25 +178,23 @@ Historico *criarHistorico()
 
 int historicoVazio(Historico *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em historicoVazio");
+        logErro(-2);
         return 2;
     }
     if (l->inicio == NULL)
         return 0;
 
-    fclose(erro);
+
     return 1;
 }
 
 int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em inserirFimHistorico");
+        logErro(-2);
         return 2;
     }
     NoOperacao *noLista = l->inicio;
@@ -232,16 +222,15 @@ int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char o
         no->prox = noLista->prox;
         noLista->prox = no;
     }
-    fclose(erro);
+
     return 0;
 }
 
 int removerFimHistorico(Historico *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em removerFimHistorico");
+        logErro(-2);
         return 2;
     }
     if (historicoVazio(l) == 0)
@@ -262,7 +251,7 @@ int removerFimHistorico(Historico *l)
         noAuxiliar->prox = NULL;
 
     free(noLista);
-    fclose(erro);
+
     return 0;
 }
 
@@ -276,7 +265,6 @@ void mostrarHistorico(Historico *l)
 {
     // nao testei mas acho que faz sentido
     // mo trampo namoral
-    erro = fopen("log.txt", "a");
     if (l != NULL)
     {
         printf("Historico:\n");
@@ -299,10 +287,9 @@ void mostrarHistorico(Historico *l)
 // se quiser me chama no zap que eu explico, ta funcionando perfeitamente, so eh meio foda de entender.
 int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
 {
-    erro = fopen("log.txt", "a");
     if (a == NULL || b == NULL || c == NULL || h == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em opcaoA");
+        logErro(-2);
         return 2;
     }
 
@@ -405,18 +392,16 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
         return -1;
         break;
     }
-    fprintf(erro,"eu nao aguento mais ");
     mostrarOperacao(a,b,c);
-    fclose(erro);
+
     return 0;
 }
 
 int corrige(Numero *l)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em corrige");
+        logErro(-2);
         return 2;
     }
     if (listaVazia(l) == 0)
@@ -429,17 +414,16 @@ int corrige(Numero *l)
             removerInicio(l);
         }
     }
-    fclose(erro);
+
     return 0;
 }
 
 int tamanho(Numero *l)
 {
-    erro = fopen("log.txt", "a");
 
     if (l == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em tamanho");
+        logErro(-2);
         return -1;
     }
 
@@ -455,16 +439,15 @@ int tamanho(Numero *l)
         i++;
         nolista = nolista->prox;
     }
-    fclose(erro);
+
     return i;
 }
 
 int copia(Numero *l, Numero *r)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL || r == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em copia");
+        logErro(-2);
         return -1;
     }
     limpar(r);
@@ -475,7 +458,7 @@ int copia(Numero *l, Numero *r)
         no = no->prox;
     }
     r->sinal = l->sinal;
-    fclose(erro);
+
     return 0;
 }
 
@@ -486,19 +469,21 @@ int copia(Numero *l, Numero *r)
 
 Numero *soma(Historico *l, Numero *n1, Numero *n2)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em soma");
+        
         return NULL;
     }
     if (n1 == NULL || n2 == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em soma");
+        logErro(-2);
         return NULL;
     }
     if (listaVazia(n1) == 0)
+    {
         return NULL;
+    }
+        
     if (listaVazia(n2) == 0)
         return NULL;
     Numero *n3 = criar();
@@ -509,8 +494,6 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
         {
             copia(n2, n3);
             // inserirFimHistorico(l,n1,n2,n3,'+');
-            fclose(hist);
-            fclose(erro);
             return n3;
         }
     }
@@ -521,8 +504,6 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
         {
             copia(n1, n3);
             // inserirFimHistorico(l,n1,n2,n3,'+');
-            fclose(hist);
-            fclose(erro);
             return n3;
         }
     }
@@ -602,21 +583,19 @@ Numero *soma(Historico *l, Numero *n1, Numero *n2)
         c = c->ant;
     }
     // inserirFimHistorico(l,n1,n2,n3,'+');
-    fclose(erro);
+
     return n3;
 }
 
 Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em subtracao");
         return NULL;
     }
     if (n1 == NULL || n2 == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em subtracao");
+        logErro(-2);
         return NULL;
     }
     if (listaVazia(n1) == 0)
@@ -745,7 +724,6 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
             n3->sinal = sin;
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
             return n3;
         }
     }
@@ -757,7 +735,8 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
             copia(n1, n3);
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
+    
+
             return n3;
         }
     }
@@ -832,23 +811,21 @@ Numero *subtracao(Historico *l, Numero *n1, Numero *n2)
     }
 
     //inserirFimHistorico(l,n1,n2,n3,'-');
-    fclose(erro);
+
     copia(naux1,n1);
     return n3;
 }
 
 Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
 {
-    erro = fopen("log.txt", "a");
     Numero *n3 = criar();
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em multiplicacao");
         return NULL;
     }
     if (n1 == NULL || n2 == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em multiplicacao");
+        logErro(-2);
         return NULL;
     }
     if (listaVazia(n1) == 0)
@@ -876,7 +853,8 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
             inserirFim(n3,0);
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
+    
+
             return n3;
         }
         else if (n1->inicio->valor == 1)
@@ -892,7 +870,8 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
                 n3->sinal = '+';
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
+    
+
             return n3;
         }
     }
@@ -904,7 +883,8 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
             inserirFim(n3,0);
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
+    
+
             return n3;
         }
         else if (n2->inicio->valor == 1)
@@ -920,7 +900,8 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
                 n3->sinal = '+';
             // inserirFimHistorico(l,n1,n2,n3,'+');
             fclose(hist);
-            fclose(erro);
+    
+
             return n3;
         }
     }
@@ -992,38 +973,129 @@ Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2)
     if ((n1->sinal == '-') && (n2->sinal == '-'))
         n3->sinal = '+';
     // inserirFimHistorico(l,n1,n2,n3,'*');
-    fclose(erro);
+
     return n3;
 }
 
 Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto)
 {
-    erro = fopen("log.txt", "a");
     if (l == NULL)
     {
-        fprintf(erro, "\nHistorico Nulo em divisao");
         return NULL;
     }
     if (n1 == NULL || n2 == NULL)
     {
-        fprintf(erro, "\nNumero Nulo em divisao");
+        logErro(-2);
         return NULL;
     }
     int i,j=0;
-    fprintf(erro,"\npassando pela divisao");
     Numero *n3 = criar();
-    Numero *auxn3 = criar();
-    Numero *auxn2 = criar();
-    Numero *n2copia = criar();
-    copia(n2,n2copia);
-    Numero *res = criar();
-    Numero *res1 = criar();
-    inserirFim(res1,1);
-    Numero *res2 = criar();
+    NoNumero *ptro = (NoNumero *)malloc(sizeof(NoNumero));
+    Numero *seccao = criar();
+    Numero *aux = criar();
+    Numero *aux1 = criar();
+    Numero *D = criar();
+    inserirFim(D,1);
+    int y = 1;
     i = diferenca(n1,n2);
     if(i==-1)
     {
-        
+        int n = tamanho(n2), m = tamanho(n1);
+        seccao = cortaNumero(n1,n,ptro);
+        if(m==n)
+        {
+            i = diferenca(seccao,n2);
+            switch(i)
+            {
+                case 0://seccao == n2
+                {
+                    inserirFim(n3,1);
+                    limpar(seccao);
+                    inserirFim(seccao,0);
+                    break;
+                }
+                case -1://seccao > n2
+                {
+                    while(i!=-2)
+                    {
+                        limpar(aux);
+                        aux1 = multiplicacao(l,n2,D);
+                        aux = subtracao(l,seccao,aux1);
+                        i = diferenca(aux,n2);
+                        limpar(aux1);
+                        y++;
+                        limpar(D);
+                        inserirFim(D,y);
+                    }
+                    limpar(seccao);
+                    copia(aux,seccao);
+                    limpar(aux);
+                    inserirFim(n3,y-1);
+                    limpar(D);
+                    break;
+                }
+            }
+        }
+        else
+        {
+        NoNumero *a = ptro;//nó imediatamente depois dos nós copiados para a secção.
+        while(a!=NULL)
+        {
+            printf("seccao = ");
+            mostrar(seccao);
+            i = diferenca(seccao,n2);
+            printf("seccao = ");
+            mostrar(seccao);
+            printf("n2 = ");
+            mostrar(n2);
+            printf("\ni = %d",i);
+            switch(i)
+            {
+                case 0://seccao == n2
+                {
+                    printf("0");
+                    inserirFim(n3,1);
+                    limpar(seccao);
+                    inserirFim(seccao,a->valor);
+                    mostrar(seccao);
+                    break;
+                }
+                case -2://seccao < n2
+                {
+                    printf("-2");
+                    inserirFim(n3,0);
+                    inserirFim(seccao,a->valor);
+                    break;
+                }
+                case -1://seccao > n2
+                {
+                    printf("-1");
+                    while(i!=-2)
+                    {
+                        limpar(aux);
+                        aux1 = multiplicacao(l,n2,D);
+                        aux = subtracao(l,seccao,aux1);
+                        i = diferenca(aux,n2);
+                        limpar(aux1);
+                        y++;
+                        limpar(D);
+                        inserirFim(D,y);
+                    }
+                    limpar(seccao);
+                    copia(aux,seccao);
+                    limpar(aux);
+                    inserirFim(seccao,a->valor);
+                    inserirFim(n3,y-1);
+                    y=1;
+                    limpar(D);
+                    inserirFim(D,y);
+                    break;
+                }
+            }
+            a = a->prox;
+            if(a==NULL) printf("AAAAAAAAAA");
+        }
+        }
     }
     if(i==-2)
     {
@@ -1039,11 +1111,12 @@ Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto)
     }
     if(i==-3)
     {
-        fprintf(erro, "\nErro na diferenca");
         return NULL;
     }
     // coisinhas da operacao
-    fclose(erro);
+    corrige(n3);
+    copia(seccao,resto);
+    return n3;
 }
 
 int diferenca(Numero *a, Numero *b)
@@ -1087,10 +1160,9 @@ int diferenca(Numero *a, Numero *b)
 int mostrarNumeroArquivo(Numero *a)
 {
     hist=fopen("historico.txt","a");
-    erro=fopen("log.txt","a");
     if(a==NULL)
     {
-        fprintf(erro,"Numero NULO em mostrar arquivo");
+        logErro(-2);
         return -1;
     }
 
@@ -1104,7 +1176,7 @@ int mostrarNumeroArquivo(Numero *a)
     }
     fprintf(hist,"\n");
 
-    fclose(erro);
+
     fclose(hist);
     return 0;
 }
@@ -1114,10 +1186,9 @@ ta sendo chamada no opcaoA() dentro dos cases, parece ser uma boa pra gente usar
 int mostrarOperacao(Numero *a, Numero *b, Numero *c)
 {
     hist=fopen("historico.txt","a");
-    erro=fopen("log.txt","a");
     if(a==NULL || b==NULL || c==NULL)
     {
-        fprintf(erro,"Numero NULO em mostrar arquivo");
+        logErro(-2);
         return -1;
     }
     fprintf(hist,"\n");
@@ -1125,7 +1196,36 @@ int mostrarOperacao(Numero *a, Numero *b, Numero *c)
     mostrarNumeroArquivo(b);
     mostrarNumeroArquivo(c);
 
-    fclose(erro);
     fclose(hist);
     return 0;
 }
+
+/*
+    cortaNumero:
+    supondo cortar 1234567, tirando os 3 primeiros elementos.
+    essa função retornaria o Numero 123, e um ponteiro prx que apontaria pro nó do elemento de valor 4
+*/
+Numero *cortaNumero(Numero *a, int tam, NoNumero *prx)
+{
+    Numero *ret = criar();
+    NoNumero *A = a->inicio;
+    for(int i=0; i<tam; i++)
+    {
+        inserirFim(ret,A->valor);
+        A = A->prox;
+    }
+    prx = A;
+    return ret;
+}
+
+void logErro(int x)
+{
+    erro=fopen("log.txt","a+");
+    if(x==-2)
+        fprintf(erro,"\nNumero Nulo");
+    if(x==-1)
+        fprintf(erro,"\nHistorico Nulo");
+    if(x==0)
+        fprintf(erro,"Devolvendo resultado Nulo");
+    fclose(erro);
+}  
