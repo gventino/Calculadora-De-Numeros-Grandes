@@ -21,14 +21,14 @@ int copia(Numero *l, Numero *r);
 //Historico:
 Historico *criarHistorico();
 void limparHistorico(Historico *h);
-int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, char op);
+int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, Numero *resto,char op);
 int removerHistorico(Historico *h);
 int tamanhoHistorico(Historico *h);
 int historicoVazio(Historico *h);
 void mostrarHistorico(Historico *h);
 
 //opcoes:
-int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
+int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h);
 
 //Operações diversas:
 int diferenca(Numero *a,Numero *b);

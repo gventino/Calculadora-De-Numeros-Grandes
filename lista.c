@@ -25,6 +25,7 @@ typedef struct nooperacao
     Numero *a;
     Numero *b;
     Numero *c;
+    Numero *res;
     char operacao;
     struct nooperacao *prox;
 }NoOperacao;
@@ -108,9 +109,12 @@ int inserirFim(Numero *l, int it)
 
 void limpar(Numero *l)
 {
-    l->sinal = ' ';
-    while (listaVazia(l) != 0)
-        removerInicio(l);
+    if(l!=NULL)
+    {
+        l->sinal = ' ';
+        while (listaVazia(l) != 0)
+            removerInicio(l);
+    }
 }
 
 void mostrar(Numero *l)
@@ -188,7 +192,7 @@ void limparHistorico(Historico *h)
         removerHistorico(h);
 }
 
-int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, char op)
+int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, Numero *resto,char op)
 {
     if(h==NULL)
     {
@@ -202,6 +206,11 @@ int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, char op)
     copia(n2,no->b);
     no->c=criar();
     copia(n3,no->c);
+    if(resto!=NULL)
+    {
+        no->res=criar();
+        copia(resto,no->res);
+    }
     no->operacao=op;
     no->prox=NULL;
 
@@ -297,6 +306,11 @@ void mostrarHistorico(Historico *h)
 
             printf("\n");
             mostrar(no->c);
+            if(no->operacao=='/')
+            {
+                printf("\nRESTO: ");
+                mostrar(no->res);
+            }
             printf("\n\n");
             no=no->prox;
         }
@@ -305,14 +319,14 @@ void mostrarHistorico(Historico *h)
 }
 
 // se quiser me chama no zap que eu explico, ta funcionando perfeitamente, so eh meio foda de entender.
-int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
+int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
 {
     if (a == NULL || b == NULL || c == NULL)
     {
         logErro(-2);
         return 2;
     }
-
+    //limpar(res);
     int r;
     int userInputA;
     char teste;
@@ -365,6 +379,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     corrige(b);
     mostrar(b);
     // printf("\n\n\n%c %c",a->sinal,b->sinal);
+
     char op;
     switch (operacao)
     {
@@ -398,14 +413,12 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
     }
     case '/':
     {
-        Numero *res = criar();
         c = divisao(a, b, res);
         printf("\ndivisao feita!");
         printf("\no resultado da divisao eh:");
         mostrar(c);
         printf("\no resto da divisao eh:");
         mostrar(res);
-        limpar(res);
         op='/';
         break;
     }
@@ -414,7 +427,14 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h)
         return -1;
         break;
     }
-    inserirHistorico(h,a,b,c,op);
+    if(op=='/')
+    {
+        inserirHistorico(h,a,b,c,res,op);
+    }
+    else
+    {
+        inserirHistorico(h,a,b,c,NULL,op);
+    }
     mostrarOperacao(a,b,c);
 
     return 0;

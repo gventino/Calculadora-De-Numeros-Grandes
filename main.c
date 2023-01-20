@@ -15,6 +15,7 @@ int main()
     Numero *A = criar();
     Numero *B = criar();
     Numero *C = criar();
+    Numero *R = criar();
 
     printf("\nEscolha uma das opcoes a baixo:\n");
     printf("A- Comecar operacao nova\n");
@@ -36,10 +37,11 @@ int main()
         {
         case 'A':
             // funcao de comecar nova operacao aqui
-            opcaoA(A, B, C, H);
+            opcaoA(A, B, C, R, H);
             limpar(A);
             limpar(B);
             limpar(C);
+            limpar(R);
             printf("\nOperacao Realizada!");
             break;
 
