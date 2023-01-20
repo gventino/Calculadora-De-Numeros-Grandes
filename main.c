@@ -14,7 +14,6 @@ int main()
     Numero *A = criar();
     Numero *B = criar();
     Numero *C = criar();
-    Historico *historico = criarHistorico();
 
     printf("\nEscolha uma das opcoes a baixo:\n");
     printf("A- Comecar operacao nova\n");
@@ -35,7 +34,7 @@ int main()
         {
         case 'A':
             // funcao de comecar nova operacao aqui
-            opcaoA(A, B, C, historico);
+            opcaoA(A, B, C);
             limpar(A);
             limpar(B);
             limpar(C);
@@ -44,13 +43,11 @@ int main()
 
         case 'B':
             // funcao de limpar queue das operacoes aqui
-            limparHistorico(historico);
             printf("\nClear Realizado!");
             break;
 
         case 'C':
             // funcao de mostrar historico
-            mostrarHistorico(historico);
             printf("\nHistorico Exibido");
             break;
 

@@ -18,29 +18,21 @@ int tamanho(Numero *l);
 int copia(Numero *l, Numero *r);
 
 //Historico:
-int mostrarNumeroArquivo(Numero *a);
-int mostrarOperacao(Numero *a, Numero *b, Numero *c);
-typedef struct listaHistorico Historico;
-Historico *criarHistorico();
-int historicoVazio(Historico *l);
-int inserirFimHistorico(Historico *l, Numero *n1, Numero *n2, Numero *n3, char op);
-int removerFimHistorico(Historico *l);
-void limparHistorico(Historico *l);
-void mostrarHistorico(Historico *l);
+
 
 //opcoes:
-int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
+int opcaoA(Numero *a, Numero *b, Numero *c);
 
 //Operações diversas:
 int diferenca(Numero *a,Numero *b);
-Numero *cortaNumero(Numero *a, int tam, NoNumero *prx);
-Numero *soma(Historico *l, Numero *n1, Numero *n2);
+Numero *cortaNumero(Numero *a, int tam);
+Numero *soma(Numero *n1, Numero *n2);
 //Numero *somaAlt(Historico *l, Numero *n1, Numero *n2, int retorno);
-Numero *subtracao(Historico *l, Numero *n1, Numero *n2);
+Numero *subtracao(Numero *n1, Numero *n2);
 //Numero *subtracaoAlt(Historico *l, Numero *n1, Numero *n2);
-Numero *multiplicacao(Historico *l, Numero *n1, Numero *n2);
+Numero *multiplicacao(Numero *n1, Numero *n2);
 //Numero *multiplicacaoAlt(Historico *l, Numero *n1, Numero *n2);
-Numero *divisao(Historico *l, Numero *n1, Numero *n2, Numero *resto);
+Numero *divisao(Numero *n1, Numero *n2, Numero *resto);
 //Numero *divisaoAlt(Historico *l, Numero *n1, Numero *n2);
 void criarLogs();
 void logErro(int x);
