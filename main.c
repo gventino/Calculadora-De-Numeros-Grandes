@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <windows.h>
+#include <windows.h>
 #include <ctype.h>
 #include <string.h>
 #include "lista.h"
@@ -11,6 +11,7 @@ int main()
     char l; // lixo
     char *n1, *n2;
     criarLogs();
+    Historico *H=criarHistorico();
     Numero *A = criar();
     Numero *B = criar();
     Numero *C = criar();
@@ -19,6 +20,7 @@ int main()
     printf("A- Comecar operacao nova\n");
     printf("B- Limpar historico\n");
     printf("C- Exibir Historico de operacoes\n");
+    printf("D- Limpar Terminal\n");
     printf("X- Encerrar o programa\n\n");
 
     scanf("%c", &op);
@@ -34,7 +36,7 @@ int main()
         {
         case 'A':
             // funcao de comecar nova operacao aqui
-            opcaoA(A, B, C);
+            opcaoA(A, B, C, H);
             limpar(A);
             limpar(B);
             limpar(C);
@@ -43,16 +45,23 @@ int main()
 
         case 'B':
             // funcao de limpar queue das operacoes aqui
+            limparHistorico(H);
             printf("\nClear Realizado!");
             break;
 
         case 'C':
             // funcao de mostrar historico
+            mostrarHistorico(H);
             printf("\nHistorico Exibido");
+            break;
+
+        case 'D':
+            system("cls");
             break;
 
         case 'X':
             return 0;
+
         default:
             fprintf(stderr, "\nINPUT INVALIDO!");
         }
@@ -61,7 +70,8 @@ int main()
         printf("A- Comecar operacao nova\n");
         printf("B- Limpar historico\n");
         printf("C- Exibir Historico de operacoes\n");
-        printf("X- Encerrar\n\n");
+        printf("D- Limpar Terminal\n");
+        printf("X- Encerrar o programa\n\n");
 
         scanf("%c", &op);
         scanf("%c", &l);

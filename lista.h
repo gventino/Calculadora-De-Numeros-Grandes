@@ -4,6 +4,7 @@
 //Numeros:
 typedef struct listaNumero Numero;
 typedef struct no NoNumero;
+typedef struct filaHistorico Historico;
 
 Numero *criar();
 int listaVazia(Numero *l);
@@ -18,10 +19,16 @@ int tamanho(Numero *l);
 int copia(Numero *l, Numero *r);
 
 //Historico:
-
+Historico *criarHistorico();
+void limparHistorico(Historico *h);
+int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, char op);
+int removerHistorico(Historico *h);
+int tamanhoHistorico(Historico *h);
+int historicoVazio(Historico *h);
+void mostrarHistorico(Historico *h);
 
 //opcoes:
-int opcaoA(Numero *a, Numero *b, Numero *c);
+int opcaoA(Numero *a, Numero *b, Numero *c, Historico *h);
 
 //Operações diversas:
 int diferenca(Numero *a,Numero *b);
