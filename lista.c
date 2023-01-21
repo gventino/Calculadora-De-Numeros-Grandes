@@ -305,11 +305,22 @@ void mostrarHistorico(Historico *h)
                 printf("-");
 
             printf("\n");
-            mostrar(no->c);
-            if(no->operacao=='/')
+            if(no->operacao!='/')
+                mostrar(no->c);
+            else
             {
-                printf("\nRESTO: ");
-                mostrar(no->res);
+                if((no->b->inicio)->valor!=0)
+                {
+                    mostrar(no->c);
+                    printf("\nRESTO: ");
+                    mostrar(no->res);
+                }
+                else
+                {
+                    printf("NO EXISTE");
+                    printf("\nRESTO: ");
+                    printf("NO EXISTE");
+                }
             }
             printf("\n\n");
             no=no->prox;
@@ -332,7 +343,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     char teste;
     char lixo;
     char operacao;
-    printf("\nInsira o Primeiro Numero: ");
+    printf("\n|->Insira o Primeiro Numero: ");
     teste = getc(stdin);
     while (teste != '\n')
     {
@@ -348,16 +359,16 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     fflush(stdin);
     if (a->sinal != '-')
         a->sinal = '+';
-    printf("\nA=");
+    printf("\n|->A=");
     corrige(a);
     mostrar(a);
 
-    printf("\nInsira a operacao:");
+    printf("\n\n|->soma : +; \n|->subtracao : -; \n|->multiplicacao : *; \n|->divisao : /;");
+    printf("\n\n|->Insira a operacao:");
     scanf("%c", &operacao);
     fflush(stdin);
 
-    lixo = getc(stdin);
-    printf("\nInsira o Segundo Numero: ");
+    printf("\n|->Insira o Segundo Numero: ");
     teste = getc(stdin);
     while (teste != '\n')
     {
@@ -375,7 +386,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     fflush(stdin);
     if (b->sinal != '-')
         b->sinal = '+';
-    printf("\nB=");
+    printf("\n|->B=");
     corrige(b);
     mostrar(b);
     // printf("\n\n\n%c %c",a->sinal,b->sinal);
@@ -387,8 +398,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     case '+':
     {
         c = soma(a, b);
-        printf("\nsoma feita!");
-        printf("\no resultado da soma eh:");
+        printf("\n\nRESULTADO:");
         mostrar(c);
         op='+';
         break;
@@ -396,8 +406,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     case '-':
     {
         c = subtracao(a, b);
-        printf("\nsubtracao feita!");
-        printf("\no resultado da subtracao eh:");
+        printf("\n\nRESULTADO:");
         mostrar(c);
         op='-';
         break;
@@ -405,8 +414,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     case '*':
     {
         c = multiplicacao(a, b);
-        printf("\nmultiplicacao feita!");
-        printf("\no resultado da multiplicacao eh:");
+        printf("\n\nRESULTADO:");
         mostrar(c);
         op='*';
         break;
@@ -414,16 +422,15 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     case '/':
     {
         c = divisao(a, b, res);
-        printf("\ndivisao feita!");
-        printf("\no resultado da divisao eh:");
+        printf("\n\nRESULTADO:");
         mostrar(c);
-        printf("\no resto da divisao eh:");
+        printf("\n\nRESTO:");
         mostrar(res);
         op='/';
         break;
     }
     default:
-        printf("\noperacao invalida!ERRO!");
+        printf("\n\noperacao invalida!ERRO!");
         return -1;
         break;
     }
@@ -449,12 +456,13 @@ int corrige(Numero *l)
     }
     if (listaVazia(l) == 0)
         return 1;
-    int i, j;
+    int i=2;
     if(tamanho(l)>1)
     {
-        while (l->inicio->valor == 0)
+        while ((l->inicio->valor == 0)&&(i>1))
         {
             removerInicio(l);
+            i = tamanho(l);
         }
     }
 
@@ -638,6 +646,12 @@ Numero *subtracao( Numero *n1, Numero *n2)
         return NULL;
     Numero *n3 = criar();
     int j = 0;
+    if((n1->inicio->valor==0)&&(n2->inicio->valor==0))
+    {
+        inserirFim(n3,0);
+        n3->sinal = '+';
+        return n3;
+    }
     if ((n1->sinal == '-') && (n2->sinal == '+'))
     {
         n2->sinal = '-';
@@ -847,6 +861,7 @@ Numero *subtracao( Numero *n1, Numero *n2)
     //inserirFimHistorico(l,n1,n2,n3,'-');
 
     copia(naux1,n1);
+    limpar(naux1);
     return n3;
 }
 
@@ -994,6 +1009,7 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
         b = b->ant;
     }
     copia(res0, n3);
+    limpar(res0);
     if ((n1->sinal == '+') && (n2->sinal == '+'))
         n3->sinal = '+';
     if ((n1->sinal == '-') && (n2->sinal == '+'))
@@ -1052,12 +1068,14 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
                     inserirFim(n3,1);
                     limpar(seccao);
                     inserirFim(seccao,a->valor);
+                    corrige(seccao);
                     break;
                 }
                 case -2://seccao < n2
                 {
                     inserirFim(n3,0);
                     inserirFim(seccao,a->valor);
+                    corrige(seccao);
                     break;
                 }
                 case -1://seccao > n2
@@ -1077,6 +1095,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
                     copia(aux,seccao);
                     limpar(aux);
                     inserirFim(seccao,a->valor);
+                    corrige(seccao);
                     inserirFim(n3,y-1);
                     y=1;
                     limpar(D);
@@ -1094,6 +1113,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
                 inserirFim(n3,1);
                 limpar(seccao);
                 inserirFim(seccao,0);
+                corrige(seccao);
                 break;
             }
             case -2://seccao < n2
@@ -1117,6 +1137,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
                 limpar(seccao);
                 copia(aux,seccao);
                 limpar(aux);
+                corrige(seccao);
                 inserirFim(n3,y-1);
                 y=1;
                 limpar(D);
@@ -1145,6 +1166,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     // coisinhas da operacao
     corrige(n3);
     copia(seccao,resto);
+    limpar(seccao);
     if ((n1->sinal == '+') && (n2->sinal == '+'))
         n3->sinal = '+';
     if ((n1->sinal == '-') && (n2->sinal == '+'))

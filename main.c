@@ -42,7 +42,7 @@ int main()
             limpar(B);
             limpar(C);
             limpar(R);
-            printf("\nOperacao Realizada!");
+            printf("\n\nOperacao Realizada!");
             break;
 
         case 'B':
@@ -62,6 +62,21 @@ int main()
             break;
 
         case 'X':
+            limpar(A);
+            limpar(B);
+            limpar(C);
+            limpar(R);
+            limparHistorico(H);
+            free(A);
+            free(B);
+            free(C);
+            free(R);
+            free(H);
+            A=NULL;
+            B=NULL;
+            C=NULL;
+            R=NULL;
+            H=NULL;
             return 0;
 
         default:
