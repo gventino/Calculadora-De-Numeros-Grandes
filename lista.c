@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "lista.h"
 
 FILE *erro;
@@ -50,7 +51,11 @@ Numero *criar()
 {
     Numero *l = (Numero *)malloc(sizeof(Numero));
     if (l == NULL)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     l->inicio = NULL;
     return l;
 }
@@ -294,9 +299,9 @@ void mostrarHistorico(Historico *h)
             else mostrar(no->b);
 
             printf("\n");
-            if(tamA>tamB)
+            if(tamA>tamB && tamA>tamC)
                 q=tamA;
-            if(tamB>tamA)
+            if(tamB>tamA && tamB>tamC)
                 q=tamB;
             if(tamC>=tamA && tamC>=tamB)
                 q=tamC;
@@ -317,9 +322,9 @@ void mostrarHistorico(Historico *h)
                 }
                 else
                 {
-                    printf("NO EXISTE");
+                    printf("NAO EXISTE");
                     printf("\nRESTO: ");
-                    printf("NO EXISTE");
+                    printf("NAO EXISTE");
                 }
             }
             printf("\n\n");
@@ -349,10 +354,12 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     {
         if (teste == '-')
             a->sinal = '-';
-        else
+        else if(isdigit(teste)>0)
+        {
             ungetc(teste, stdin);
-        scanf("%1d", &userInputA);
-        inserirFim(a, userInputA);
+            scanf("%1d", &userInputA);
+            inserirFim(a, userInputA);
+        }
         userInputA = 0;
         teste = getc(stdin);
     }
@@ -374,12 +381,12 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     {
         if (teste == '-')
             b->sinal = '-';
-
-        else
+        else if(isdigit(teste)>0)
+        {
             ungetc(teste, stdin);
-
-        scanf("%1d", &userInputA);
-        inserirFim(b, userInputA);
+            scanf("%1d", &userInputA);
+            inserirFim(b, userInputA);
+        }
         userInputA = 0;
         teste = getc(stdin);
     }
@@ -391,58 +398,58 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     mostrar(b);
     // printf("\n\n\n%c %c",a->sinal,b->sinal);
 
-    char op;
     switch (operacao)
     {
 
-    case '+':
-    {
-        c = soma(a, b);
-        printf("\n\nRESULTADO:");
-        mostrar(c);
-        op='+';
-        break;
+        case '+':
+        {
+            c = soma(a, b);
+            printf("\n\nRESULTADO:");
+            mostrar(c);
+            break;
+        }
+        case '-':
+        {
+            c = subtracao(a, b);
+            printf("\n\nRESULTADO:");
+            mostrar(c);
+            break;
+        }
+        case '*':
+        {
+            c = multiplicacao(a, b);
+            printf("\n\nRESULTADO:");
+            mostrar(c);
+            break;
+        }
+        case '/':
+        {
+            c = divisao(a, b, res);
+            if(c!=NULL)
+            {
+                printf("\n\nRESULTADO:");
+                mostrar(c);
+                printf("\n\nRESTO:");
+                mostrar(res);
+            }
+            
+            break;
+        }
+        default:
+            printf("\n\noperacao invalida!ERRO!");
+            return -1;
+            break;
     }
-    case '-':
+    if(operacao=='/')
     {
-        c = subtracao(a, b);
-        printf("\n\nRESULTADO:");
-        mostrar(c);
-        op='-';
-        break;
-    }
-    case '*':
-    {
-        c = multiplicacao(a, b);
-        printf("\n\nRESULTADO:");
-        mostrar(c);
-        op='*';
-        break;
-    }
-    case '/':
-    {
-        c = divisao(a, b, res);
-        printf("\n\nRESULTADO:");
-        mostrar(c);
-        printf("\n\nRESTO:");
-        mostrar(res);
-        op='/';
-        break;
-    }
-    default:
-        printf("\n\noperacao invalida!ERRO!");
-        return -1;
-        break;
-    }
-    if(op=='/')
-    {
-        inserirHistorico(h,a,b,c,res,op);
+        inserirHistorico(h,a,b,c,res,operacao);
+        mostrarOperacao(a,b,c,res,operacao);
     }
     else
     {
-        inserirHistorico(h,a,b,c,NULL,op);
+        inserirHistorico(h,a,b,c,NULL,operacao);
+        mostrarOperacao(a,b,c,NULL,operacao);
     }
-    mostrarOperacao(a,b,c);
 
     return 0;
 }
@@ -523,15 +530,21 @@ Numero *soma(Numero *n1, Numero *n2)
     if (n1 == NULL || n2 == NULL)
     {
         logErro(-2);
+        logErro(0);
         return NULL;
     }
     if (listaVazia(n1) == 0)
     {
+        logErro(0);
         return NULL;
     }
 
     if (listaVazia(n2) == 0)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     Numero *n3 = criar();
 
     if (tamanho(n1) == 1)
@@ -638,12 +651,21 @@ Numero *subtracao( Numero *n1, Numero *n2)
     if (n1 == NULL || n2 == NULL)
     {
         logErro(-2);
+        logErro(0);
         return NULL;
     }
     if (listaVazia(n1) == 0)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     if (listaVazia(n2) == 0)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     Numero *n3 = criar();
     int j = 0;
     if((n1->inicio->valor==0)&&(n2->inicio->valor==0))
@@ -871,12 +893,21 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
     if (n1 == NULL || n2 == NULL)
     {
         logErro(-2);
+        logErro(0);
         return NULL;
     }
     if (listaVazia(n1) == 0)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     if (listaVazia(n2) == 0)
+    {
+        logErro(0);
         return NULL;
+    }
+        
     int y, z, i = 0, j = 0;
     NoNumero *a = n1->inicio;
     NoNumero *b = n2->inicio;
@@ -1027,12 +1058,14 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     if (n1 == NULL || n2 == NULL)
     {
         logErro(-2);
+        logErro(0);
         return NULL;
     }
     Numero *n3 = criar();
     if(n2->inicio->valor == 0)
     {
         printf("\nNAO DIVIDA POR ZERO, MERO MORTAL >:[");
+        logErro(0);
         return NULL;
     }
     if(n1->inicio->valor == 0)
@@ -1161,6 +1194,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     }
     if(i==-3)
     {
+        logErro(0);
         return NULL;
     }
     // coisinhas da operacao
@@ -1227,16 +1261,25 @@ int diferenca(Numero *a, Numero *b)
     //0 = iguais; -1 = a maior; -2 = b maior; -3 = erro.
 }
 
-//printa o numero passado no arquivo historico.txt, sim, esta funcionando.
-int mostrarNumeroArquivo(Numero *a)
+
+/*falta so printar a operacao e o sinal de igual, salva as operacoes feitas no historico.txt
+ta sendo chamada no opcaoA() dentro dos cases, parece ser uma boa pra gente usar.*/
+int mostrarOperacao(Numero *a, Numero *b, Numero *c, Numero *res, char op)
 {
+    int tamA=tamanho(a);
+    int tamB=tamanho(b);
+    int tamC=tamanho(c);
+    int i;
+    int q;
+
     hist=fopen("historico.txt","a");
-    if(a==NULL)
+    if(a==NULL || b==NULL || c==NULL)
     {
         logErro(-2);
         return -1;
     }
 
+    //mostrando A
     NoNumero *no = a->inicio;
     if(a->sinal=='-')
         fprintf(hist,"%c",a->sinal);
@@ -1245,28 +1288,81 @@ int mostrarNumeroArquivo(Numero *a)
         fprintf(hist,"%d",no->valor);
         no=no->prox;
     }
-    fprintf(hist,"\n");
 
+    //mostrando operacao
+    fprintf(hist,"\n%c", op);
 
-    fclose(hist);
-    return 0;
-}
-
-/*falta so printar a operacao e o sinal de igual, salva as operacoes feitas no historico.txt
-ta sendo chamada no opcaoA() dentro dos cases, parece ser uma boa pra gente usar.*/
-int mostrarOperacao(Numero *a, Numero *b, Numero *c)
-{
-    hist=fopen("historico.txt","a");
-    if(a==NULL || b==NULL || c==NULL)
+    //mostrando b
+    no = b->inicio;
+    if(b->sinal=='-')
     {
-        logErro(-2);
-        return -1;
+        fprintf(hist,"(");
+        fprintf(hist,"%c",b->sinal);
+        while(no!=NULL)
+        {
+            fprintf(hist,"%d",no->valor);
+            no=no->prox;
+        }
+        fprintf(hist,")");
     }
-    fprintf(hist,"\n");
-    mostrarNumeroArquivo(a);
-    mostrarNumeroArquivo(b);
-    mostrarNumeroArquivo(c);
+    else
+    {
+        while(no!=NULL)
+        {
+            fprintf(hist,"%d",no->valor);
+            no=no->prox;
+        }
+    }
 
+    fprintf(hist,"\n");
+    if(tamA>tamB && tamA>tamC)
+        q=tamA;
+    if(tamB>tamA && tamB>tamC)
+        q=tamB;
+    if(tamC>=tamA && tamC>=tamB)
+        q=tamC;
+
+    for(i=0;i<q+1;i++)
+        fprintf(hist,"-");
+
+
+    fprintf(hist,"\n");
+    no = c->inicio;
+    if(op!='/')
+    {
+        while(no!=NULL)
+        {
+            fprintf(hist,"%d",no->valor);
+            no=no->prox;
+        }
+    }
+
+    else
+    {
+        if((b->inicio)->valor!=0)
+        {
+            while(no!=NULL)
+            {
+                fprintf(hist,"%d",no->valor);
+                no=no->prox;
+            }
+
+            fprintf(hist,"\nRESTO: ");
+            no=res->inicio;
+            while(no!=NULL)
+            {
+                fprintf(hist,"%d",no->valor);
+                no=no->prox;
+            }
+        }
+        else
+        {
+            fprintf(hist,"NAO EXISTE");
+            fprintf(hist,"\nRESTO: ");
+            fprintf(hist,"NAO EXISTE");
+        }
+    }
+    fprintf(hist,"\n\n\n");
     fclose(hist);
     return 0;
 }
@@ -1292,10 +1388,11 @@ void logErro(int x)
 {
     erro=fopen("log.txt","a+");
     if(x==-2)
-        fprintf(erro,"\nNumero Nulo");
+        fprintf(erro,"\nNumero Nulo;");
     if(x==-1)
-        fprintf(erro,"\nHistorico Nulo");
+        fprintf(erro,"\nHistorico Nulo;");
     if(x==0)
-        fprintf(erro,"Devolvendo resultado Nulo");
+        fprintf(erro,"Retornando Nulo;");
     fclose(erro);
 }
+

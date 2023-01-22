@@ -26,7 +26,7 @@ int removerHistorico(Historico *h);
 int tamanhoHistorico(Historico *h);
 int historicoVazio(Historico *h);
 void mostrarHistorico(Historico *h);
-int mostrarOperacao(Numero *a, Numero *b, Numero *c);
+int mostrarOperacao(Numero *a, Numero *b, Numero *c, Numero *res, char op);
 
 //opcoes:
 int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h);
