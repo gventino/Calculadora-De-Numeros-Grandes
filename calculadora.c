@@ -1297,7 +1297,7 @@ int mostrarOperacao(Numero *a, Numero *b, Numero *c, Numero *res, char op)
     }
 
     fprintf(hist,"\n");
-    if(tamA>tamB && tamA>tamC)
+    if(tamA>=tamB && tamA>tamC)
         q=tamA;
     if(tamB>tamA && tamB>tamC)
         q=tamB;
@@ -1378,4 +1378,3 @@ void logErro(int x)
         fprintf(erro,"Retornando Nulo;");
     fclose(erro);
 }
-
