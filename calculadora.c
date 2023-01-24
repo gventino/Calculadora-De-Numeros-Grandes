@@ -370,7 +370,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     corrige(a);
     mostrar(a);
 
-    printf("\n\n|->soma : +; \n|->subtracao : -; \n|->multiplicacao : *; \n|->divisao : /;");
+    printf("\n\n|->soma : +; \n|->subtracao : -; \n|->multiplicacao : *; \n|->divisao : /;\n|->mostrar o maior dentre os numeros escritos : m;");
     printf("\n\n|->Insira a operacao:");
     scanf("%c", &operacao);
     fflush(stdin);
@@ -433,6 +433,61 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
                 mostrar(res);
             }
 
+            break;
+        }
+        case 'm':
+        {
+            int maior=diferenca(a,b);
+            if(a->sinal=='+' && b->sinal=='-')
+                        maior = -1;
+            if(a->sinal=='-' && b->sinal=='+')
+                        maior = -2;
+
+            if(a->sinal=='-' && b->sinal=='-')
+            {
+                int l;
+                if(maior==-1)
+                    l = -2;
+                if(maior==-2)
+                    l = -1;
+                maior=l;
+            }
+             switch(maior)
+             {
+                case 0://seccao == n2
+                {
+                    printf("\n\nA:");
+                    copia(a,c);
+                    mostrar(a);
+                    printf("\nEh igual a: ");
+                    mostrar (b);
+                    break;
+                }
+                case -1:
+                {
+                    printf("\n\nA:");
+                    copia(a,c);
+                    mostrar(a);
+                    printf("\nEh maior que: ");
+                    mostrar (b);
+                    break;
+                }
+                case -2:
+                {
+                    printf("\n\nB:");
+                    copia(b,c);
+                    mostrar(b);
+                    printf("\nEh maior que: ");
+                    mostrar (a);
+                    break;
+                }
+                default:
+                {
+                    printf("\n\noperacao invalida!ERRO!");
+                    return -1;
+                    break;
+                }
+             }
             break;
         }
         default:
