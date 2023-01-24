@@ -1,17 +1,25 @@
 # depslib dependency file v1.0
-1674271989 source:d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\main.c
+1674529943 source:d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
 	<ctype.h>
 	<string.h>
-	"lista.h"
+	"headersCalculadora.h"
 
 1674427683 d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\lista.h
 
-1674430496 source:d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\lista.c
+1674529036 source:d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\lista.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	"lista.h"
+
+1674530439 source:d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\calculadora.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"headersCalculadora.h"
+
+1674427683 d:\docx\coding\faculdade\aed1\trabalhofinal\cng-alternativa\headerscalculadora.h
 

@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <ctype.h>
 #include <string.h>
-#include "lista.h"
+#include "headersCalculadora.h"
 
 int main()
 {
