@@ -374,6 +374,7 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     printf("\n\n|->Insira a operacao:");
     scanf("%c", &operacao);
     fflush(stdin);
+    lixo = getc(stdin);
 
     printf("\n|->Insira o Segundo Numero: ");
     teste = getc(stdin);
@@ -1086,10 +1087,18 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     if(i==-1)
     {
         int n = tamanho(n2), m = tamanho(n1);
-        seccao = cortaNumero(n1,n);
-        for(int i=0; i<n; i++)
+        if(m==n) 
         {
-            a = a->prox;
+            copia(n1,seccao);//quando o tamanho dos dois é igual, a seccao se torna literalmente o numero A
+            a = NULL;
+        }
+        else
+        {
+            seccao = cortaNumero(n1,n);
+            for(int i=0; i<n; i++)
+            {
+                a = a->prox;
+            }
         }
         while(a!=NULL)
         {
@@ -1183,12 +1192,21 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     if(i==-2)
     {
         inserirFim(n3,0);
+        n3->sinal = '+';
         copia(n1,resto);
         return n3;
     }
     if(i==0)
     {
         inserirFim(n3,1);
+        if ((n1->sinal == '+') && (n2->sinal == '+'))
+            n3->sinal = '+';
+        if ((n1->sinal == '-') && (n2->sinal == '+'))
+            n3->sinal = '-';
+        if ((n1->sinal == '+') && (n2->sinal == '-'))
+            n3->sinal = '-';
+        if ((n1->sinal == '-') && (n2->sinal == '-'))
+            n3->sinal = '+';
         inserirFim(resto,0);
         return n3;
     }
