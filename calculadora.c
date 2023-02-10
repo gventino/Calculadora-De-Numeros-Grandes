@@ -6,7 +6,7 @@
 FILE *erro;
 FILE *hist;
 
-//construcao de um numero:----------------------------------------------------------------------------------------
+//construcao de um numero:
 typedef struct no
 {
     int valor;
@@ -20,7 +20,7 @@ typedef struct listaNumero
     NoNumero *inicio;
 } Numero;
 
-//construcao do historico:----------------------------------------------------------------------------------------
+//construcao do historico:
 typedef struct nooperacao
 {
     Numero *a;
@@ -46,7 +46,13 @@ void criarLogs()
     fclose(erro);
     fclose(hist);
 }
-// funcoes Numero:----------------------------------------------------------------------------------------
+// funcoes Numero:
+/*
+criar:
+------
+a funcao criar é responsável por alocar dinamicamente um número a ser usado posteriormente no programa,
+é uma funcao que nao recebe nada, mas retorna a lista adequadamente alocada e ajustada para uso.
+*/
 Numero *criar()
 {
     Numero *l = (Numero *)malloc(sizeof(Numero));
@@ -60,6 +66,12 @@ Numero *criar()
     return l;
 }
 
+/*
+listaVazia:
+-----------
+a funcao listaVazia é responsavel por avisar se uma lista do tipo Numero está vazia ou não.
+ela recebe um Numero como parametro, e retorna 1 se não for vazia e 0 se for vazia (retorna -2 se o ponteiro Numero não estiver alocado)
+*/
 int listaVazia(Numero *l)
 {
     if (l == NULL)
@@ -73,6 +85,13 @@ int listaVazia(Numero *l)
 
 }
 
+/*
+inserirInicio:
+--------------
+a funçao inserirInicio é responsavel por inserir um valor inteiro no inicio de uma lista do tipo Numero.
+recebe como parametro um Numero e o elemento a se inserir.
+retorna 0 se operacao bem-sucedida, -2 para ponteiro nao alocado 
+*/
 int inserirInicio(Numero *l, int it)
 {
     if (l == NULL)
@@ -91,6 +110,13 @@ int inserirInicio(Numero *l, int it)
     return 0;
 }
 
+/*
+inserirFim:
+--------------
+a funçao inserirFim é responsavel por inserir um valor inteiro no fim de uma lista do tipo Numero.
+recebe como parametro um Numero e o elemento a se inserir.
+retorna 0 se operacao bem-sucedida, -2 para ponteiro nao alocado.
+*/
 int inserirFim(Numero *l, int it)
 {
     if (l == NULL)
@@ -112,6 +138,12 @@ int inserirFim(Numero *l, int it)
     return 0;
 }
 
+/*
+limpar:
+-------
+a funcao limpar é responsável por apagar todos os nós presentes num Numero.
+não retorna nada, mas recebe o Numero a se apagar como parametro.
+*/
 void limpar(Numero *l)
 {
     if(l!=NULL)
@@ -122,13 +154,19 @@ void limpar(Numero *l)
     }
 }
 
+/*
+mostrar:
+--------
+a funcao mostrar é responsável por mostrar no terminal o Numero que recebe como parametro.
+não retorna nada.
+*/
 void mostrar(Numero *l)
 {
     int i, j;
     if (l != NULL)
     {
         NoNumero *noLista = l->inicio;
-        if (l->sinal == '-')
+        if ((l->sinal == '-') && ((l->inicio)->valor!=0))
             printf("%c", l->sinal);
         while (noLista != NULL)
         {
@@ -138,6 +176,12 @@ void mostrar(Numero *l)
     }
 }
 
+/*
+removerFim:
+-----------
+a funcao removerFim é responsável por remover o ultimo elemento de uma lista do tipo Numero, passada como parametro.
+retorna 0 em caso de operaçao bem-sucedida, 1 em caso de lista impossivel de remover, e -2 para caso de ponteiro nao alocado.
+*/
 int removerFim(Numero *l)
 {
     if (l == NULL)
@@ -159,6 +203,12 @@ int removerFim(Numero *l)
     return 0;
 }
 
+/*
+removerinicio:
+--------------
+a funcao removerInicio é responsável por remover o primeiro elemento de uma lista do tipo Numero, passada como parametro.
+retorna 0 em caso de operaçao bem-sucedida, 1 em caso de lista impossivel de remover, e -2 para caso de ponteiro nao alocado.
+*/
 int removerInicio(Numero *l)
 {
     if (l == NULL)
@@ -177,7 +227,13 @@ int removerInicio(Numero *l)
     return 0;
 }
 
-//funcoes historico:----------------------------------------------------------------------------------------
+//funcoes historico:
+/*
+criarHistorico:
+---------------
+a funcao criarHistorico é responsavel por alocar dinamicamente uma fila do tipo Historico a ser usado no programa.
+não recebe nada de parâmetro, mas retorna uma lista adequadamente ajustada para uso.
+*/
 Historico *criarHistorico()
 {
     Historico *h=(Historico*)malloc(sizeof(Historico));
@@ -186,6 +242,13 @@ Historico *criarHistorico()
     h->fim=NULL;
     return h;
 }
+
+/*
+limparHistorico:
+----------------
+a funcao limparHistorico é responsavel por apagar todos os nós de uma fila do tipo Historico passado como parametro.
+essa função não retorna nada.
+*/
 void limparHistorico(Historico *h)
 {
     if(h==NULL)
@@ -197,6 +260,11 @@ void limparHistorico(Historico *h)
         removerHistorico(h);
 }
 
+/*
+inserirHistorico:
+-----------------
+a funcao inserirHistorico é responsável por inserir, no inicio da fila Historico, um novo nó contendo a operação realizada
+*/
 int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, Numero *resto,char op)
 {
     if(h==NULL)
@@ -230,6 +298,12 @@ int inserirHistorico(Historico *h, Numero *n1, Numero *n2, Numero *n3, Numero *r
     return 0;
 }
 
+/*
+removerHistorico:
+-----------------
+a funcao removerHistorico é responsável por retirar o primeiro nó da fila Historico passado como parametro.
+retorna 0 caso a operacao seja bem-sucedida, e retorna -1 caso o ponteiro recebido não esteja alocado.
+*/
 int removerHistorico(Historico *h)
 {
     if(h==NULL)
@@ -247,6 +321,12 @@ int removerHistorico(Historico *h)
     return 0;
 }
 
+/*
+tamanhoHistorico:
+-----------------
+a funcao tamanhoHistorico é responsavel por determinar e retornar o tamanho da fila do tipo historico, passado como parametro.
+retorna -1 caso o ponteiro recebido nao esteja alocado.
+*/
 int tamanhoHistorico(Historico *h)
 {
     if(h==NULL)
@@ -257,6 +337,12 @@ int tamanhoHistorico(Historico *h)
     return h->qtd;
 }
 
+/*
+historicoVazio:
+---------------
+a funcao historicoVazio é responsavel por analisar se uma fila do tipo Historico possui ou nao elementos.
+retorna 0 caso seja vazio, 1 caso contrário, e -1 caso o ponteiro recebido nao esteja alocado. 
+*/
 int historicoVazio(Historico *h)
 {
     if(h==NULL)
@@ -271,6 +357,12 @@ int historicoVazio(Historico *h)
         return 1;
 }
 
+/*
+mostrarHistorico:
+-----------------
+a funcao mostrarHistorico é responsavel por mostrar no terminal todos os elementos da fila do tipo Historico recebido como parametro.
+nao retorna nada.
+*/
 void mostrarHistorico(Historico *h)
 {
     if(h!=NULL)
@@ -334,7 +426,16 @@ void mostrarHistorico(Historico *h)
     }
 }
 
-//funcoes calculadora:----------------------------------------------------------------------------------------
+//funcoes calculadora:
+/*
+opcaoA:
+-------
+a funcao opcaoA é a cabeça do programa, todas as outras funções são chamadas diretamente ou indiretamente por essa!
+ela é responsável por administrar por qual operação (de acordo com comandos do usuário) os números por ela capturados devem se submeter.
+Além de, também, ser responsável por guardar na fila histórico e nos arquivos historico.txt e log.txt todas as operaçoes, e/ou erros feitos/ocorridos no programa.
+recebe como parâmetros quatro listas do tipo Numero criadas na main, e a fila do tipo Historico.
+retorna 2 para caso algum ponteiro nao esteja alocado, e retorna 0 para caso em que as operações foram todas bem-sucedidas.
+*/
 int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
 {
     if (a == NULL || b == NULL || c == NULL)
@@ -509,6 +610,13 @@ int opcaoA(Numero *a, Numero *b, Numero *c, Numero *res, Historico *h)
     return 0;
 }
 
+/*
+corrige:
+--------
+a funcao corrige é responsavel por retirar contradições numéricas do Numero que se recebe por parametro.
+por contradições numéricas, se diz um zero antes do ultimo elemento válido da lista, do tipo: 012 é convertido para 12 no corrige.
+retorna 2 para ponteiro recebido nao alocado, 1 para lista impossivel de ser operada, e 0 para operacao bem-sucedida.
+*/
 int corrige(Numero *l)
 {
     if (l == NULL)
@@ -531,6 +639,11 @@ int corrige(Numero *l)
     return 0;
 }
 
+/*
+tamanho:
+--------
+a funcao tamanho é responsavel por calcular e retornar o tamanho da lista Numero dada por parametro, retorna -1 para caso o ponteiro dado nao esteja alocado.
+*/
 int tamanho(Numero *l)
 {
 
@@ -556,6 +669,12 @@ int tamanho(Numero *l)
     return i;
 }
 
+/*
+copia:
+------
+a funcao copia é responsavel por copiar, sem compartilhar endereço de memória, os valores de um Numero passado por parametro para outro Numero, tambem passado por parametro.
+retorna -1 para caso algum dos argumentos nao esteja alocado.
+*/
 int copia(Numero *l, Numero *r)
 {
     if (l == NULL || r == NULL)
@@ -575,7 +694,12 @@ int copia(Numero *l, Numero *r)
     return 0;
 }
 
-//operacoes da calculadora:----------------------------------------------------------------------------------------
+//operacoes da calculadora:
+/*
+soma:
+-----
+a função soma soma dois numeros inteiros grandes(ambos são os únicos parâmetros da mesma), e retorna o resultado dessa soma.
+*/
 Numero *soma(Numero *n1, Numero *n2)
 {
     if (n1 == NULL || n2 == NULL)
@@ -696,6 +820,11 @@ Numero *soma(Numero *n1, Numero *n2)
     return n3;
 }
 
+/*
+subtracao:
+----------
+a funcao subtracao subtrai dois numeros inteiros grandes (ambos sao os unicos parametros da mesma) , e retorna o resultado dessa subtracao.
+*/
 Numero *subtracao( Numero *n1, Numero *n2)
 {
     if (n1 == NULL || n2 == NULL)
@@ -928,6 +1057,11 @@ Numero *subtracao( Numero *n1, Numero *n2)
     return n3;
 }
 
+/*
+multiplicacao:
+--------------
+a funcao multiplicacao multiplica dois numeros inteiros grandes(ambos sao os unicos parametros da mesma), e retorna o resultado da operacao.
+*/
 Numero *multiplicacao( Numero *n1, Numero *n2)
 {
     Numero *n3 = criar();
@@ -961,7 +1095,6 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
     Numero *aux = criar();
 
     inserirInicio(res0, 0);
-    inserirInicio(help, 0);
 
     if (tamanho(n1) == 1)
     {
@@ -1023,31 +1156,28 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
         {
             // gerar uma linha da multiplicação
             y = (b->valor) * (a->valor);
-            inserirInicio(aux, y);
-            if ((j > 0) && (aux->inicio->valor != 0))
-            {
-                for (int y = 0; y < j; y++)
-                {
-                    inserirFim(aux, 0);
-                }
-            }
-            c = aux->inicio; // nao precisa de loop pq so o inicio de aux tem valor relevante
-
-            if (c->valor >= 10)
-            {
-                z = (c->valor) / 10;
-                c->valor = (c->valor) % 10;
-                inserirInicio(aux, z);
-            }
-            res1 = soma(aux, help);
-            copia(res1, help);
-            limpar(res1);
-            limpar(aux);
-            j++;
+            inserirInicio(help, y);
             a = a->ant;
         }
+        
         // gerar a soma das linhas da multiplicação
-        j = 0;
+        c = help->inicio;
+        while (c->prox != NULL)
+            c = c->prox;
+        while(c!=NULL)
+        {
+            if(c->valor>=10)
+            {
+                j = (c->valor)/10;
+                c->valor = (c->valor)%10;
+                if(c->ant==NULL)
+                    inserirInicio(help,j);
+                else
+                    (c->ant)->valor = (c->ant)->valor + j;
+            }
+            c = c->ant;
+        }
+
         if ((i > 0) && (help->inicio->valor != 0))
         {
             for (int y = 0; y < i; y++)
@@ -1057,7 +1187,6 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
         copia(help1, res0);
         limpar(help1);
         limpar(help);
-        inserirInicio(help, 0);
         i++;
         b = b->ant;
     }
@@ -1075,6 +1204,12 @@ Numero *multiplicacao( Numero *n1, Numero *n2)
     return n3;
 }
 
+/*
+divisao:
+--------
+a funcao divisao divide dois numeros inteiros grandes, de parâmetros, a função possui dois para os numeros a serem operados, e um parâmetro para retorno do resto da divisão.
+Enquanto isso, ela retorna o quociente da divisão
+*/
 Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
 {
     if (n1 == NULL || n2 == NULL)
@@ -1097,6 +1232,7 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
         return n3;
     }
     int i;
+    char sinaln1, sinaln2;
     NoNumero *a = n1->inicio;
     Numero *seccao = criar();
     Numero *aux = criar();
@@ -1105,8 +1241,12 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     inserirFim(D,1);
     int y = 1,j=0;
     i = diferenca(n1,n2);
+    sinaln1 = n1->sinal;
+    sinaln2 = n2->sinal;
     if(i==-1)
     {
+        n1->sinal = '+';
+        n2->sinal = '+';
         int n = tamanho(n2), m = tamanho(n1);
         if(m==n) 
         {
@@ -1240,17 +1380,32 @@ Numero *divisao( Numero *n1, Numero *n2, Numero *resto)
     corrige(n3);
     copia(seccao,resto);
     limpar(seccao);
+    n1->sinal = sinaln1;
+    n2->sinal = sinaln2;
     if ((n1->sinal == '+') && (n2->sinal == '+'))
         n3->sinal = '+';
     if ((n1->sinal == '-') && (n2->sinal == '+'))
+    {
         n3->sinal = '-';
+        resto->sinal = '-';
+    }
     if ((n1->sinal == '+') && (n2->sinal == '-'))
         n3->sinal = '-';
     if ((n1->sinal == '-') && (n2->sinal == '-'))
+    {
         n3->sinal = '+';
+        resto->sinal = '-';
+    }
     return n3;
 }
 
+/*
+diferenca:
+----------
+a funcao diferenca apresenta ao usuario o maior numero entre dois numeros dados como parametro.
+a funcao retorna 0 para igualdade, -1 para o primeiro maior que o segundo numero, e -2 para o segundo maior que o primeiro numero.
+além disso, a funcao pode retornar -3 para caso de erro (caso dois numeros nao tenham dado nem iguais, nem diferentes)
+*/
 int diferenca(Numero *a, Numero *b)
 {
     if (listaVazia(a) == 0)
@@ -1297,10 +1452,15 @@ int diferenca(Numero *a, Numero *b)
         no2 = no2->prox;
     }
     return -3;
-    //0 = iguais; -1 = a maior; -2 = b maior; -3 = erro.
 }
 
-//printa historico no historico.txt:
+/*
+mostrarOperacao:
+----------------
+a funcao mostrarOperacao é responsável por escrever no arquivo historico.txt as operações já feitas enquanto o programa roda,
+por parâmetros, temos os numeros operandos, o numero resultante, a operação e, caso a operação seja divisão, também é passado o resto da divisão.
+a funcao retorna -1 para erro e 0 para operaçao bem-sucedida.
+*/
 int mostrarOperacao(Numero *a, Numero *b, Numero *c, Numero *res, char op)
 {
     int tamA=tamanho(a);
@@ -1405,9 +1565,10 @@ int mostrarOperacao(Numero *a, Numero *b, Numero *c, Numero *res, char op)
 }
 
 /*
-    cortaNumero:
-    supondo cortar 1234567, tirando os 3 primeiros elementos.
-    essa função retornaria o Numero 123, e um ponteiro prx que apontaria pro nó do elemento de valor 4
+cortaNumero:
+------------
+a funcao cortaNumero copia para uma outra lista (e por consequencia a retorna, no fim da operação) um pedaço do numero passado como parametro (contando do algarismo mais significativo para o menos significativo), baseando-se no tamanho também passado como parâmetro.
+exemplo : supondo cortar 1234567, tirando os 3 (tam = 3) primeiros elementos: essa função retornaria o Numero 123.
 */
 Numero *cortaNumero(Numero *a, int tam)
 {
@@ -1421,7 +1582,12 @@ Numero *cortaNumero(Numero *a, int tam)
     return ret;
 }
 
-//printa no log de erro .txt os erros.
+/*
+logErro:
+--------
+a funcao logErro é uma funçao do tipo que não retorna nada, e serve somente para escrever no arquivo log.txt os erros gerados no decorrer do programa
+a funçao recebe como parametro um numero x, que diz o tipo de erro a ser escrito no arquivo
+*/
 void logErro(int x)
 {
     erro=fopen("log.txt","a+");
